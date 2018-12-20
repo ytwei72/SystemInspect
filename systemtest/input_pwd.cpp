@@ -77,6 +77,7 @@ Input_Pwd::~Input_Pwd()
 
 }
 
+// get rid of the old method
 #if 0
 void Input_Pwd::Set_Pwd()
 {
