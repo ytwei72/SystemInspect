@@ -50,6 +50,9 @@ main_widget::main_widget(QWidget *parent)
     sys_test_widget = new Sys_Test_Widget();//系统检测页面
     button_widget = new Buttom_Widget();
 
+    // create the page of system performance
+    pageSysPerformance = new CPageSysPerformance();
+
     main_menu = new Main_Menu();
 
     stacked_widget->addWidget(one_widget);
@@ -61,6 +64,9 @@ main_widget::main_widget(QWidget *parent)
     stacked_widget->addWidget(serven_widget);
     //stacked_widget->addWidget(eight_widget);
     stacked_widget->addWidget(sys_test_widget);
+
+    // add the page of system performance
+    stacked_widget->addWidget(pageSysPerformance);
 
     QVBoxLayout *stack_layout = new QVBoxLayout();
     stack_layout->addWidget(stacked_widget);
@@ -152,7 +158,7 @@ void main_widget::turnPage(int current_page)
     }
     if(current_page == 7)
     {
-        //stacked_widget->setCurrentWidget(eight_widget);
+        stacked_widget->setCurrentWidget(pageSysPerformance);
     }
 
 }

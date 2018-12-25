@@ -5,6 +5,9 @@
 #include <QMovie>
 #include <QTranslator>
 
+#include "Utils/csysutils.h"
+#include "Utils/cwebutils.h"
+
 
 
 int main(int argc, char *argv[])
@@ -14,6 +17,12 @@ int main(int argc, char *argv[])
 //    QTranslator translator;
 //    translator.load(QString(":"));
 //    a.installTranslator(&translator);
+
+//    CSysUtils::resetTimerClock();
+//    CWebUtils webUtil;
+//    for (int i=0; i<100; i++)
+//        webUtil.curlUrl("www.sohu.com");
+//    qint64 elpasedTime = CSysUtils::getElapsedMilliSeconds();
 
 
 

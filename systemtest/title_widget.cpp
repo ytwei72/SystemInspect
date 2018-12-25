@@ -53,7 +53,7 @@ TitleWidget::TitleWidget(QWidget *parent)
 
     QStringList string_list;
     string_list<<":/page1/func1.png"<<":/page1/func2.png"<<":/page1/func3.png"<<":/page1/func4.png"
-                    <<":/page1/func5.png"<<":/page1/func6.png"<<":/page1/func7.png";
+                    <<":/page1/func5.png"<<":/page1/func6.png"<<":/page1/func7.png"<<":/page1/func7.png";
 
     QHBoxLayout *button_layout = new QHBoxLayout();
     QSignalMapper *signal_mapper = new QSignalMapper(this);
@@ -84,7 +84,7 @@ TitleWidget::TitleWidget(QWidget *parent)
     button_list.at(4)->setText(tr("网络"));
     button_list.at(5)->setText(tr("系统"));
     button_list.at(6)->setText(tr("安全"));
-    //button_list.at(7)->setText(tr("拓展"));
+    button_list.at(7)->setText(tr("拓展"));
 
 //    QVBoxLayout *sys_layout = new QVBoxLayout();
 //    sys_layout->addWidget(sys_test);

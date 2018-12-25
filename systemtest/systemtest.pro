@@ -44,30 +44,10 @@ SOURCES += main.cpp\
     main_page_serven.cpp \
     main_menu.cpp \
     about_us.cpp \
-    about_us.cpp \
-    boot_start_time.cpp \
-    buttom_widget.cpp \
-    common.cpp \
-    drop_shadow_widget.cpp \
-    input_pwd.cpp \
-    main.cpp \
-    main_menu.cpp \
-    main_page_five.cpp \
-    main_page_four.cpp \
-    main_page_one.cpp \
-    main_page_serven.cpp \
-    main_page_six.cpp \
-    main_page_three.cpp \
-    main_page_two.cpp \
-    main_widget.cpp \
-    net_speed.cpp \
-    push_button.cpp \
-    show_percent_page.cpp \
-    sys_test_widget.cpp \
-    title_widget.cpp \
-    tool_button.cpp \
-    user_msg.cpp \
-    wait_dialog.cpp
+    wait_dialog.cpp \
+    Utils/csysutils.cpp \
+    Utils/cwebutils.cpp \
+    Pages/cpagesysperformance.cpp
 
 HEADERS  += main_widget.h \
     tool_button.h \
@@ -91,34 +71,13 @@ HEADERS  += main_widget.h \
     main_page_serven.h \
     main_menu.h \
     about_us.h \
-    debug/Scripts/sys_test/体检/get_point.h \
-    about_us.h \
-    boot_start_time.h \
-    buttom_widget.h \
-    common.h \
-    drop_shadow_widget.h \
     get_point.h \
-    input_pwd.h \
-    main_menu.h \
-    main_page_five.h \
-    main_page_four.h \
-    main_page_one.h \
-    main_page_serven.h \
-    main_page_six.h \
-    main_page_three.h \
-    main_page_two.h \
-    main_widget.h \
-    net_speed.h \
-    push_button.h \
-    show_percent_page.h \
-    sys_test_widget.h \
-    title_widget.h \
-    tool_button.h \
-    user_msg.h \
-    wait_dialog.h
+    wait_dialog.h \
+    Utils/csysutils.h \
+    Utils/cwebutils.h \
+    Pages/cpagesysperformance.h
 
 RESOURCES += \
-    sources/resources.qrc \
     sources/resources.qrc
 QT += widgets
 #QT += webkit

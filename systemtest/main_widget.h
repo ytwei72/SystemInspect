@@ -26,6 +26,7 @@
 #include "main_page_serven.h"
 //#include "main_page_eight.h"
 #include "main_menu.h"
+#include "Pages/cpagesysperformance.h"
 
 class main_widget : public DropShadowWidget
 {
@@ -62,6 +63,9 @@ private:
     //main_page_eight *eight_widget;
     Boot_Start_Time *start_time_widget;
     Input_Pwd *input_pwd_widget;
+
+    CPageSysPerformance *       pageSysPerformance;
+
 
     Sys_Test_Widget *sys_test_widget;
     Buttom_Widget *button_widget;
