@@ -55,6 +55,7 @@ protected slots:
     void pingURL();
     void networkPerformance();
     void outputNetperfInfo();
+    void outputLineInfo();
 
 public:
 //    CPageSysPerformance();

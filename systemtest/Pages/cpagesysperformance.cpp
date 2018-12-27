@@ -3,6 +3,7 @@
 #include <QHBoxLayout>
 #include <QLineEdit>
 #include <QProcess>
+#include <qdebug.h>
 
 #include <Utils/csysutils.h>
 #include <Utils/cwebutils.h>
@@ -107,6 +108,7 @@ void CPageSysPerformance::networkPerformance()
     m_procNetperf->start(strClientCmd);
 
     connect(m_procNetperf, SIGNAL(readyReadStandardOutput()), this, SLOT(outputNetperfInfo()));
+//    connect(m_procNetperf, SIGNAL(readyRead()), this, SLOT(outputLineInfo()));
     bool bStarted = m_procNetperf->waitForStarted();
 
     m_textResult->setPlaceholderText("正在进行检测，请稍等 ... ...");
@@ -118,7 +120,22 @@ void CPageSysPerformance::networkPerformance()
 
 void CPageSysPerformance::outputNetperfInfo(){
     QString strOutput = m_procNetperf->readAllStandardOutput();
+    qDebug()<<"final result: " + strOutput;
     m_textResult->setPlaceholderText(strOutput);
+
+    m_procNetperf->waitForFinished();
+    m_procNetperf->deleteLater();
+}
+
+void CPageSysPerformance::outputLineInfo(){
+    QString strOldOutput = m_textResult->placeholderText();
+
+    while (m_procNetperf->canReadLine()) {
+        QString strLine = m_procNetperf->readLine();
+        qDebug()<<"Read Line: " + strLine;
+        strOldOutput += strLine;
+        m_textResult->setPlaceholderText(strOldOutput);
+    }
 }
 
 void CPageSysPerformance::initItemList(){

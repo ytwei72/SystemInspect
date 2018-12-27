@@ -53,7 +53,7 @@ TitleWidget::TitleWidget(QWidget *parent)
 
     QStringList string_list;
     string_list<<":/page1/func1.png"<<":/page1/func2.png"<<":/page1/func3.png"<<":/page1/func4.png"
-                    <<":/page1/func5.png"<<":/page1/func6.png"<<":/page1/func7.png"<<":/page1/func7.png";
+                    <<":/page1/func5.png"<<":/page1/func6.png"<<":/page1/func7.png"<<":/page1/func8.png";
 
     QHBoxLayout *button_layout = new QHBoxLayout();
     QSignalMapper *signal_mapper = new QSignalMapper(this);

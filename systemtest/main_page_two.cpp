@@ -51,10 +51,12 @@ Main_Page_two::Main_Page_two(QWidget *parent) :
     init_list_widget();
     init_widget_1();
     init_widget_2();
+    initWidgetCpuChart();
     /*设置堆栈窗口*/
     stack = new QStackedWidget();
     stack->addWidget(widget_1);
     stack->addWidget(widget_2);
+    stack->addWidget(widgetCpuChart);
 
     QHBoxLayout *main_layout = new QHBoxLayout();
     main_layout->addWidget(list);
@@ -81,6 +83,8 @@ Main_Page_two::Main_Page_two(QWidget *parent) :
     connect(My_Obj_Test_Cpu_object, SIGNAL(send_cpu_info(QString)), this, SLOT(Set_Test_cpu(QString)));
     connect(re_test_cpu_2, SIGNAL(clicked()), My_Obj_Test_Cpu_object, SLOT(start_test_cpu()));
 
+    connect(this, SIGNAL(refreshCpuRateInfo(QString)), m_chartCpuDynamicRate, SLOT(refreshCpuInfo(QString)));
+
     this->setAutoFillBackground(true);
     list->setStyleSheet("border:2px groove gray;border-radius:10px;padding:2px 4px;background-color:#eaeaea");
     this->setStyleSheet("QTextBrowser{background-color: #eaeaea; border:0px solid grey; border-radius: 8px;}");
@@ -100,8 +104,14 @@ void Main_Page_two::init_list_widget()
     Item_1->setTextAlignment(Qt::AlignLeft);
     Item_1->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
+    QListWidgetItem * itemCpuChart = new QListWidgetItem(tr("cpu图表"));
+    itemCpuChart->setIcon(QIcon(":/page_two/cpu2"));
+    itemCpuChart->setTextAlignment(Qt::AlignLeft);
+    itemCpuChart->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+
     list->insertItem(0,Item_0);
     list->insertItem(1,Item_1);
+    list->insertItem(2,itemCpuChart);
     //标签字体大小
     QFont font;
     font.setPointSize(14);
@@ -225,9 +235,22 @@ void Main_Page_two::init_widget_2()
 
     widget_2->setLayout(main_layout);
 }
+
+void Main_Page_two::initWidgetCpuChart(){
+    widgetCpuChart = new QWidget();
+
+    m_chartCpuDynamicRate = new CCpuDynamicChart();
+    QVBoxLayout *widget_2_V_layout = new QVBoxLayout();
+    widget_2_V_layout->addWidget(m_chartCpuDynamicRate);
+
+    widgetCpuChart->setLayout(widget_2_V_layout);
+}
+
 void Main_Page_two::Flush_Cpu_Rate(QString str)
 {
     wid_2_show_info_1->setText(str);
+
+    emit refreshCpuRateInfo(str);
 }
 void Main_Page_two::Set_Test_cpu(QString str)
 {

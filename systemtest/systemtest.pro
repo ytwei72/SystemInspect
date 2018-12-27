@@ -13,6 +13,7 @@ TEMPLATE = app
 
 QT += widgets network
 QT += testlib
+QT += charts
 CONFIG += thread
 
 
@@ -47,7 +48,8 @@ SOURCES += main.cpp\
     wait_dialog.cpp \
     Utils/csysutils.cpp \
     Utils/cwebutils.cpp \
-    Pages/cpagesysperformance.cpp
+    Pages/cpagesysperformance.cpp \
+    Charts/ccpudynamicchart.cpp
 
 HEADERS  += main_widget.h \
     tool_button.h \
@@ -75,11 +77,13 @@ HEADERS  += main_widget.h \
     wait_dialog.h \
     Utils/csysutils.h \
     Utils/cwebutils.h \
-    Pages/cpagesysperformance.h
+    Pages/cpagesysperformance.h \
+    Charts/ccpudynamicchart.h
 
 RESOURCES += \
     sources/resources.qrc
 QT += widgets
+QT += charts
 #QT += webkit
 QT += network
 
@@ -316,4 +320,6 @@ DISTFILES += \
     debug/Scripts/sys_test/体检/一键测评/测评标准 \
     sources/logo1.rc \
     sources/sys_test.ts
+
+FORMS +=
 

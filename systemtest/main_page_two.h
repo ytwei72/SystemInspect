@@ -18,6 +18,9 @@
 #include <QPaintEvent>
 #include <QTimer>
 #include <QThread>
+
+#include "Charts/ccpudynamicchart.h"
+
 /*thread object for flush cpu msg*/
 class My_Obj_Flush_Cpu:public QObject
 {
@@ -83,6 +86,12 @@ protected:
     QLabel *line_label_2_2;
     QTextBrowser *wid_2_show_info_1;
     QTextBrowser *wid_2_show_info_2;
+
+    // CPU图表页面
+    void initWidgetCpuChart();
+    QWidget * widgetCpuChart;
+    CCpuDynamicChart * m_chartCpuDynamicRate;
+
     /**/
     My_Obj_Flush_Cpu *My_Obj_Flush_Cpu_object;
     QThread *thread_flush_cpu;
@@ -92,6 +101,9 @@ protected:
 protected:
 
     bool eventFilter(QObject *obj, QEvent *event);
+
+signals:
+    void refreshCpuRateInfo(QString strInfo);
 
 protected slots:
     /*widget_1*/
