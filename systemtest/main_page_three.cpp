@@ -16,6 +16,9 @@ Main_Page_three::Main_Page_three(QWidget *parent) :
     re_test = new QPushButton();
     show_msg = new QTextBrowser();
     Input_Pwd_Widget = new Input_Pwd();
+
+    initMemChartWidget();
+
     /*listwidget按钮设置*/
     QListWidgetItem *zero = new QListWidgetItem();//新建对象
     zero->setIcon(QIcon(":/page_two/cpu1"));//设置图标
@@ -29,8 +32,16 @@ Main_Page_three::Main_Page_three(QWidget *parent) :
     one->setTextAlignment(Qt::AlignLeft);
     one->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
 
+    // 新建内存图表项，并设置图标和其他属性
+    QListWidgetItem * itemMemChart = new QListWidgetItem();
+    itemMemChart->setIcon(QIcon(":/page_two/cpu1"));//设置图标
+    itemMemChart->setText(tr("内存图表"));
+    itemMemChart->setTextAlignment(Qt::AlignLeft);
+    itemMemChart->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+
     list->insertItem(0,zero);
     list->insertItem(1,one);
+    list->insertItem(2, itemMemChart);
  /*init_work_window 布局*/
     line_label = new QLabel();
     line_label->setFixedHeight(10);
@@ -66,6 +77,7 @@ Main_Page_three::Main_Page_three(QWidget *parent) :
 
     stack->addWidget(work_window);
     stack->addWidget(work_window);
+    stack->addWidget(m_widgetMemChart);
 
     QHBoxLayout *main_layout = new QHBoxLayout();
     main_layout->addWidget(list);
@@ -75,7 +87,7 @@ Main_Page_three::Main_Page_three(QWidget *parent) :
     main_layout->setContentsMargins(0,0,0,0);
     setLayout(main_layout);
 
-    connect(list, SIGNAL(currentRowChanged(int)), stack, SLOT(setCurrentIndex(int)));
+//    connect(list, SIGNAL(currentRowChanged(int)), stack, SLOT(setCurrentIndex(int)));
     connect(list, SIGNAL(currentRowChanged(int)), this, SLOT(change_widget_cfg(int)));//页面切换时候修改页面配置
     connect(pro, SIGNAL(readyReadStandardOutput()), this, SLOT(show_msg_to_browser()));//读取标准输出
     connect(re_test, SIGNAL(clicked()), this, SLOT(flush_msg()));//重新检测按钮  重新检测
@@ -102,8 +114,32 @@ Main_Page_three::Main_Page_three(QWidget *parent) :
     this->flush_msg();
 }
 
+void Main_Page_three::initMemChartWidget(){
+    m_widgetMemChart = new QWidget();
+
+    m_chartMemInfo = new CMemoryDynamicChart();
+    QVBoxLayout *widget_2_V_layout = new QVBoxLayout();
+    widget_2_V_layout->addWidget(m_chartMemInfo);
+
+    m_widgetMemChart->setLayout(widget_2_V_layout);
+}
+
+
 void Main_Page_three::change_widget_cfg(int n)
 {
+    // 为不好的代码提供的临时解决方案
+    switch (n) {
+    case 0:
+    case 1:
+        stack->setCurrentIndex(0);
+        break;
+    case 2:
+        stack->setCurrentIndex(1);
+        break;
+    default:
+        break;
+    }
+
     /*
     if( Flag_Read_Pwd == 0 ) //检测标志位  密码是否存在|正确
     {

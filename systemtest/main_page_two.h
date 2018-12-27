@@ -88,7 +88,7 @@ protected:
     QTextBrowser *wid_2_show_info_2;
 
     // CPU图表页面
-    void initWidgetCpuChart();
+    void initCpuChartWidget();
     QWidget * widgetCpuChart;
     CCpuDynamicChart * m_chartCpuDynamicRate;
 

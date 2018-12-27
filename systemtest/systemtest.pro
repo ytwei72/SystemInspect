@@ -49,7 +49,8 @@ SOURCES += main.cpp\
     Utils/csysutils.cpp \
     Utils/cwebutils.cpp \
     Pages/cpagesysperformance.cpp \
-    Charts/ccpudynamicchart.cpp
+    Charts/ccpudynamicchart.cpp \
+    Charts/cmemorydynamicchart.cpp
 
 HEADERS  += main_widget.h \
     tool_button.h \
@@ -78,7 +79,8 @@ HEADERS  += main_widget.h \
     Utils/csysutils.h \
     Utils/cwebutils.h \
     Pages/cpagesysperformance.h \
-    Charts/ccpudynamicchart.h
+    Charts/ccpudynamicchart.h \
+    Charts/cmemorydynamicchart.h
 
 RESOURCES += \
     sources/resources.qrc

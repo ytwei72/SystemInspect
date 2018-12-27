@@ -51,7 +51,7 @@ Main_Page_two::Main_Page_two(QWidget *parent) :
     init_list_widget();
     init_widget_1();
     init_widget_2();
-    initWidgetCpuChart();
+    initCpuChartWidget();
     /*设置堆栈窗口*/
     stack = new QStackedWidget();
     stack->addWidget(widget_1);
@@ -236,7 +236,7 @@ void Main_Page_two::init_widget_2()
     widget_2->setLayout(main_layout);
 }
 
-void Main_Page_two::initWidgetCpuChart(){
+void Main_Page_two::initCpuChartWidget(){
     widgetCpuChart = new QWidget();
 
     m_chartCpuDynamicRate = new CCpuDynamicChart();

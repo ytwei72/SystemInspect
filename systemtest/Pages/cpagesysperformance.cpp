@@ -105,9 +105,8 @@ void CPageSysPerformance::networkPerformance()
     m_procNetperf = new QProcess();
     QString strClientCmd = "iperf3 -c " + strUrl;
 
-    m_procNetperf->start(strClientCmd);
-
     connect(m_procNetperf, SIGNAL(readyReadStandardOutput()), this, SLOT(outputNetperfInfo()));
+    m_procNetperf->start(strClientCmd);
 //    connect(m_procNetperf, SIGNAL(readyRead()), this, SLOT(outputLineInfo()));
     bool bStarted = m_procNetperf->waitForStarted();
 

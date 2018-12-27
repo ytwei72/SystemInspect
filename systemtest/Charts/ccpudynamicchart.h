@@ -22,8 +22,11 @@ private:
     QSplineSeries *         m_seriesCpuRate;
     QSplineSeries *         m_seriesSysCpuRate;
     QSplineSeries *         m_seriesUserCpuRate;
+    // CPU使用率图表
     QChart *                m_chart;
+    // 加载CPU图表的视图
     QChartView *            m_chartView;
+    // 本布局的主布局
     QHBoxLayout *           m_mainLayout;
 
     // 记录当前的点位置

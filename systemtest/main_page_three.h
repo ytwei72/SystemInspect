@@ -17,6 +17,8 @@
 #include <QPainter>
 #include <QPaintEvent>
 
+#include "Charts/cmemorydynamicchart.h"
+
 class Main_Page_three : public QWidget
 {
     Q_OBJECT
@@ -40,6 +42,13 @@ protected:
     QProcess *pro;
     QString out;
     int current_bash;//标志位(当前页面)
+
+    // 内存图表部件
+    QWidget *               m_widgetMemChart;
+    CMemoryDynamicChart *   m_chartMemInfo;
+
+private:
+    void initMemChartWidget();
 
 protected:
 
