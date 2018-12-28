@@ -168,6 +168,9 @@ void Main_Page_two::init_widget_1()
 
 void Main_Page_two::re_test_cpu_1_slots()
 {
+//    QProcess procTestCpu;
+//    pro = &procTestCpu;
+
     out = "";
     QString program = "bash";
     QStringList arguments;

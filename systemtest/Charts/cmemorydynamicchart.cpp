@@ -20,12 +20,11 @@ CMemoryDynamicChart::CMemoryDynamicChart(QWidget *parent) : QWidget(parent)
     setLayout(m_mainLayout);
 
     // 设置页面的背景自动填充模式
-//    this->setAutoFillBackground(true);
+    this->setAutoFillBackground(true);
 
     // 创建获取内存信息的进程对象
     m_procMemInfo = new QProcess();
 
-//    return;
     // 创建定时器，用于定时获取内存信息
     m_timerRefresh = new QTimer(this);
     connect(m_timerRefresh, SIGNAL(timeout()), this, SLOT(refreshMemInfo()));
@@ -33,8 +32,10 @@ CMemoryDynamicChart::CMemoryDynamicChart(QWidget *parent) : QWidget(parent)
 }
 
 CMemoryDynamicChart::~CMemoryDynamicChart(){
-    m_procMemInfo->close();
-    m_procMemInfo->deleteLater();
+    if (m_procMemInfo) {
+        m_procMemInfo->close();
+        m_procMemInfo->deleteLater();
+    }
 }
 
 void CMemoryDynamicChart::initMemRateSplineSeries() {
@@ -55,11 +56,13 @@ void CMemoryDynamicChart::initMemRateSplineSeries() {
 //    pen.setWidth(3);
 //    m_areaSeriesMemRate->setPen(pen);
 
-//    QLinearGradient gradient(QPointF(0, 0), QPointF(0, 1));
-//    gradient.setColorAt(0.0, 0x3cc63c);
-//    gradient.setColorAt(1.0, 0x26f626);
-//    gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-//    m_areaSeriesMemRate->setBrush(gradient);
+    QLinearGradient gradient(QPointF(0, 0), QPointF(0, 1));
+    gradient.setColorAt(0.0, 0xDD0000);
+    gradient.setColorAt(1.0, 0x00DD00);
+//    gradient.setColorAt(0.0, 0xEE6363);
+//    gradient.setColorAt(1.0, 0x7FFFD4);
+    gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
+    m_areaSeriesMemRate->setBrush(gradient);
 }
 
 void CMemoryDynamicChart::initMemChartWidget() {
@@ -76,6 +79,8 @@ void CMemoryDynamicChart::initMemChartWidget() {
     m_chartMemRate->createDefaultAxes();
     m_chartMemRate->axisY()->setRange(0, 100);
     m_chartMemRate->axisX()->setRange(0, m_nMemChartWindowWidth);
+    m_chartMemRate->setAnimationOptions(QChart::SeriesAnimations);
+//    m_chartMemRate->setTheme(QChart::ChartThemeBlueCerulean);
 
     // 新建一个容纳图表的视图
     m_chartViewMemRate = new QChartView(m_chartMemRate);
@@ -89,6 +94,9 @@ void CMemoryDynamicChart::refreshMemInfo() {
     QString strCmd = "bash";
     QStringList strParams;
     strParams<<g_sWorkingPath + "/NewScripts/memory/mem_info.sh";
+
+//    QProcess procShell;
+//    m_procMemInfo = &procShell;
 
     // 启动进程，并等待结束
     m_procMemInfo->start(strCmd, strParams);
@@ -119,6 +127,8 @@ void CMemoryDynamicChart::refreshMemInfo() {
 
     // 添加新的内存使用率数据到图表中
     addNewMemoryRatePoint(fUsedMemRate);
+
+    // TODO: 清理历史数据，防止长时间运行后，曲线点数过多
 }
 
 void CMemoryDynamicChart::addNewMemoryRatePoint(double fRate) {
@@ -128,14 +138,14 @@ void CMemoryDynamicChart::addNewMemoryRatePoint(double fRate) {
     m_nMemChartPointIndex++;
 
     // 根据数据大小调整Y轴的尺度
-    if (fRate > 90)
-        m_chartMemRate->axisY()->setRange(85, 100);
-    else if (fRate > 80)
-        m_chartMemRate->axisY()->setRange(75, 100);
-    else if (fRate > 50)
-        m_chartMemRate->axisY()->setRange(40, 100);
-    else
-        m_chartMemRate->axisY()->setRange(0, 100);
+//    if (fRate > 90)
+//        m_chartMemRate->axisY()->setRange(85, 100);
+//    else if (fRate > 80)
+//        m_chartMemRate->axisY()->setRange(75, 100);
+//    else if (fRate > 50)
+//        m_chartMemRate->axisY()->setRange(40, 100);
+//    else
+//        m_chartMemRate->axisY()->setRange(0, 100);
 
     // 调整横坐标（曲线向左移动）
     if (m_nMemChartPointIndex > m_nMemChartWindowWidth)

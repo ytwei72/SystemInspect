@@ -76,7 +76,7 @@ Main_Page_three::Main_Page_three(QWidget *parent) :
     work_window->setLayout(work_layout);
 
     stack->addWidget(work_window);
-    stack->addWidget(work_window);
+//    stack->addWidget(work_window);
     stack->addWidget(m_widgetMemChart);
 
     QHBoxLayout *main_layout = new QHBoxLayout();

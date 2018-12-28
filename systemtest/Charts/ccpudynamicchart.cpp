@@ -20,6 +20,12 @@ CCpuDynamicChart::CCpuDynamicChart(QWidget *parent) : QWidget(parent)
 
     // 设置页面的背景自动填充模式
     this->setAutoFillBackground(true);
+
+//    QPalette pal = window()->palette();
+//    pal.setColor(QPalette::Window, QRgb(0x9e8965));
+//    pal.setColor(QPalette::WindowText, QRgb(0x404044));
+//    window()->setPalette(pal);
+
 }
 
 void CCpuDynamicChart::initCpuChartWidget(){
@@ -38,6 +44,7 @@ void CCpuDynamicChart::initCpuChartWidget(){
     m_chart->createDefaultAxes();
     m_chart->axisY()->setRange(0, 100);
     m_chart->axisX()->setRange(0, m_nWindowWidth);
+    m_chart->setTheme(QChart::ChartThemeDark);
 
     // 新建一个容纳图表的视图
     m_chartView = new QChartView(m_chart);
@@ -95,6 +102,8 @@ void CCpuDynamicChart::refreshCpuInfo(QString strCpuInfo) {
     // 调整横坐标（曲线向左移动）
     if (m_nPointIndex > m_nWindowWidth)
         m_chart->axisX()->setRange(m_nPointIndex-m_nWindowWidth, m_nPointIndex);
+
+    // TODO: 清理历史数据，防止长时间运行后，曲线点数过多
 
 //    m_chart->
 //    strCpuInfo
