@@ -26,7 +26,7 @@ private:
     QChart *                m_chart;
     // 加载CPU图表的视图
     QChartView *            m_chartView;
-    // 本布局的主布局
+    // 本页面的主布局
     QHBoxLayout *           m_mainLayout;
 
     // 记录当前的点位置

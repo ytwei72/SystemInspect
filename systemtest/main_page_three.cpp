@@ -17,7 +17,10 @@ Main_Page_three::Main_Page_three(QWidget *parent) :
     show_msg = new QTextBrowser();
     Input_Pwd_Widget = new Input_Pwd();
 
+    // 初始化内存动态使用率部件
     initMemChartWidget();
+    //初始化内存分配图的部件
+    initMemAllocChartWidget();
 
     /*listwidget按钮设置*/
     QListWidgetItem *zero = new QListWidgetItem();//新建对象
@@ -35,13 +38,21 @@ Main_Page_three::Main_Page_three(QWidget *parent) :
     // 新建内存图表项，并设置图标和其他属性
     QListWidgetItem * itemMemChart = new QListWidgetItem();
     itemMemChart->setIcon(QIcon(":/page_two/cpu1"));//设置图标
-    itemMemChart->setText(tr("内存图表"));
+    itemMemChart->setText(tr("内存使用率"));
     itemMemChart->setTextAlignment(Qt::AlignLeft);
     itemMemChart->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
 
+    // 创建内存使用分布图
+    QListWidgetItem * itemMemAllocChart = new QListWidgetItem();
+    itemMemAllocChart->setIcon(QIcon(":/page_two/cpu1"));//设置图标
+    itemMemAllocChart->setText(tr("内存使用一览"));
+    itemMemAllocChart->setTextAlignment(Qt::AlignLeft);
+    itemMemAllocChart->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+
     list->insertItem(0,zero);
     list->insertItem(1,one);
-    list->insertItem(2, itemMemChart);
+    list->insertItem(2, itemMemAllocChart);
+    list->insertItem(3, itemMemChart);
  /*init_work_window 布局*/
     line_label = new QLabel();
     line_label->setFixedHeight(10);
@@ -77,6 +88,7 @@ Main_Page_three::Main_Page_three(QWidget *parent) :
 
     stack->addWidget(work_window);
 //    stack->addWidget(work_window);
+    stack->addWidget(m_widgetMemAllocChart);
     stack->addWidget(m_widgetMemChart);
 
     QHBoxLayout *main_layout = new QHBoxLayout();
@@ -124,6 +136,16 @@ void Main_Page_three::initMemChartWidget(){
     m_widgetMemChart->setLayout(widget_2_V_layout);
 }
 
+void Main_Page_three::initMemAllocChartWidget(){
+    m_widgetMemAllocChart = new QWidget();
+
+    m_chartMemAlloc = new CMemAllocChart();
+    QVBoxLayout *widget_2_V_layout = new QVBoxLayout();
+    widget_2_V_layout->addWidget(m_chartMemAlloc);
+
+    m_widgetMemAllocChart->setLayout(widget_2_V_layout);
+}
+
 
 void Main_Page_three::change_widget_cfg(int n)
 {
@@ -136,8 +158,11 @@ void Main_Page_three::change_widget_cfg(int n)
     case 2:
         stack->setCurrentIndex(1);
         break;
-    default:
+    case 3:
+        stack->setCurrentIndex(2);
         break;
+    default:
+        return;
     }
 
     /*

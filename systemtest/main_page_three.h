@@ -18,6 +18,7 @@
 #include <QPaintEvent>
 
 #include "Charts/cmemorydynamicchart.h"
+#include <Charts/cmemallocchart.h>
 
 class Main_Page_three : public QWidget
 {
@@ -43,12 +44,17 @@ protected:
     QString out;
     int current_bash;//标志位(当前页面)
 
-    // 内存图表部件
+    // 内存动态使用率图的部件
     QWidget *               m_widgetMemChart;
     CMemoryDynamicChart *   m_chartMemInfo;
 
+    // 内存分配情况的部件
+    QWidget *               m_widgetMemAllocChart;
+    CMemAllocChart *        m_chartMemAlloc;
+
 private:
     void initMemChartWidget();
+    void initMemAllocChartWidget();
 
 protected:
 

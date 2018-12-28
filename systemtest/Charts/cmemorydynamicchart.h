@@ -8,6 +8,7 @@
 #include <QProcess>
 #include <QWidget>
 #include "common.h"
+#include "czoomchartview.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -47,7 +48,7 @@ private:
     QChart *                m_chartShareMem;
     QChartView *            m_chartViewShareMem;
     QChart *                m_chartBuffMem;
-    QChartView *            m_chartViewBuffMem;
+    CZoomChartView *        m_chartViewBuffMem;
 
     // 本布局的主布局
     QHBoxLayout *           m_mainLayout;

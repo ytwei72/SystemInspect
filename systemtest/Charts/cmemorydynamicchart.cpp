@@ -51,18 +51,6 @@ void CMemoryDynamicChart::initMemRateSplineSeries() {
 
     m_areaSeriesMemRate = new QAreaSeries(m_seriesMemRate, m_seriesMemRateBase);
     m_areaSeriesMemRate->setName("内存使用率");
-
-//    QPen pen(0x059605);
-//    pen.setWidth(3);
-//    m_areaSeriesMemRate->setPen(pen);
-
-    QLinearGradient gradient(QPointF(0, 0), QPointF(0, 1));
-    gradient.setColorAt(0.0, 0xDD0000);
-    gradient.setColorAt(1.0, 0x00DD00);
-//    gradient.setColorAt(0.0, 0xEE6363);
-//    gradient.setColorAt(1.0, 0x7FFFD4);
-    gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-    m_areaSeriesMemRate->setBrush(gradient);
 }
 
 void CMemoryDynamicChart::initMemChartWidget() {
@@ -80,12 +68,27 @@ void CMemoryDynamicChart::initMemChartWidget() {
     m_chartMemRate->axisY()->setRange(0, 100);
     m_chartMemRate->axisX()->setRange(0, m_nMemChartWindowWidth);
     m_chartMemRate->setAnimationOptions(QChart::SeriesAnimations);
-//    m_chartMemRate->setTheme(QChart::ChartThemeBlueCerulean);
+    m_chartMemRate->setTheme(QChart::ChartThemeDark);
 
     // 新建一个容纳图表的视图
-    m_chartViewMemRate = new QChartView(m_chartMemRate);
+//    m_chartViewMemRate = new QChartView(m_chartMemRate);
+    m_chartViewMemRate = new CZoomChartView(m_chartMemRate);
     m_chartViewMemRate->setRenderHint(QPainter::Antialiasing);
 
+
+    QPen pen(0x00CED1);
+    pen.setWidth(2);
+    m_areaSeriesMemRate->setPen(pen);
+
+    QLinearGradient gradient(QPointF(0, 0), QPointF(0, 1));
+    gradient.setColorAt(0.0, 0xE0FF4500);
+    gradient.setColorAt(1.0, 0xE07FFFD4);
+//    gradient.setColorAt(0.0, 0xEE6363);
+//    gradient.setColorAt(1.0, 0x7FFFD4);
+    gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
+//    QBrush brush(gradient);
+//    brush.setStyle(Qt::VerPattern);
+    m_areaSeriesMemRate->setBrush(gradient);
 
 }
 

@@ -51,7 +51,9 @@ SOURCES += main.cpp\
     Pages/cpagesysperformance.cpp \
     Charts/ccpudynamicchart.cpp \
     Charts/cmemorydynamicchart.cpp \
-    Charts/czoomchartview.cpp
+    Charts/czoomchartview.cpp \
+    Charts/cmemallocchart.cpp \
+    Charts/cprocmemranking.cpp
 
 HEADERS  += main_widget.h \
     tool_button.h \
@@ -82,7 +84,9 @@ HEADERS  += main_widget.h \
     Pages/cpagesysperformance.h \
     Charts/ccpudynamicchart.h \
     Charts/cmemorydynamicchart.h \
-    Charts/czoomchartview.h
+    Charts/czoomchartview.h \
+    Charts/cmemallocchart.h \
+    Charts/cprocmemranking.h
 
 RESOURCES += \
     sources/resources.qrc
@@ -443,7 +447,8 @@ DISTFILES += \
     debug/Scripts/sys_test_result/show_result.sh \
     debug/Scripts/testpwd/testpwd.sh \
     debug/Scripts/security/5/bin.2015-01-20_15_55_38.file \
-    debug/Scripts/sys_test/体检/一键测评/测评标准
+    debug/Scripts/sys_test/体检/一键测评/测评标准 \
+    debug/NewScripts/memory/mem_ranking.sh
 
 FORMS +=
 
