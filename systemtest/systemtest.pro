@@ -53,7 +53,10 @@ SOURCES += main.cpp\
     Charts/cmemorydynamicchart.cpp \
     Charts/czoomchartview.cpp \
     Charts/cmemallocchart.cpp \
-    Charts/cprocmemranking.cpp
+    Charts/cprocmemranking.cpp \
+    Charts/modeltablechartwidget.cpp \
+    Charts/rankingtablemodel.cpp \
+    Charts/execscriptsslavethread.cpp
 
 HEADERS  += main_widget.h \
     tool_button.h \
@@ -86,7 +89,10 @@ HEADERS  += main_widget.h \
     Charts/cmemorydynamicchart.h \
     Charts/czoomchartview.h \
     Charts/cmemallocchart.h \
-    Charts/cprocmemranking.h
+    Charts/cprocmemranking.h \
+    Charts/modeltablechartwidget.h \
+    Charts/rankingtablemodel.h \
+    Charts/execscriptsslavethread.h
 
 RESOURCES += \
     sources/resources.qrc

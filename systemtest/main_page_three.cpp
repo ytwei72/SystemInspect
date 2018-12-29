@@ -20,7 +20,8 @@ Main_Page_three::Main_Page_three(QWidget *parent) :
     // 初始化内存动态使用率部件
     initMemChartWidget();
     //初始化内存分配图的部件
-    initMemAllocChartWidget();
+//    initMemAllocChartWidget();
+    initMemRankingWidget();
 
     /*listwidget按钮设置*/
     QListWidgetItem *zero = new QListWidgetItem();//新建对象
@@ -88,7 +89,8 @@ Main_Page_three::Main_Page_three(QWidget *parent) :
 
     stack->addWidget(work_window);
 //    stack->addWidget(work_window);
-    stack->addWidget(m_widgetMemAllocChart);
+//    stack->addWidget(m_widgetMemAllocChart);
+    stack->addWidget(m_widgetMemRanking);
     stack->addWidget(m_widgetMemChart);
 
     QHBoxLayout *main_layout = new QHBoxLayout();
@@ -144,6 +146,10 @@ void Main_Page_three::initMemAllocChartWidget(){
     widget_2_V_layout->addWidget(m_chartMemAlloc);
 
     m_widgetMemAllocChart->setLayout(widget_2_V_layout);
+}
+
+void Main_Page_three::initMemRankingWidget(){
+    m_widgetMemRanking = new ModelTableChartWidget();
 }
 
 

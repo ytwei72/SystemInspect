@@ -19,6 +19,7 @@
 
 #include "Charts/cmemorydynamicchart.h"
 #include <Charts/cmemallocchart.h>
+#include <Charts/modeltablechartwidget.h>
 
 class Main_Page_three : public QWidget
 {
@@ -48,6 +49,9 @@ protected:
     QWidget *               m_widgetMemChart;
     CMemoryDynamicChart *   m_chartMemInfo;
 
+    // 内存动态使用率图的部件（新方案）
+    ModelTableChartWidget *           m_widgetMemRanking;
+
     // 内存分配情况的部件
     QWidget *               m_widgetMemAllocChart;
     CMemAllocChart *        m_chartMemAlloc;
@@ -55,6 +59,7 @@ protected:
 private:
     void initMemChartWidget();
     void initMemAllocChartWidget();
+    void initMemRankingWidget();
 
 protected:
 

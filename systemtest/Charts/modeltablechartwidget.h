@@ -1,0 +1,34 @@
+
+#ifndef MODELTABLECHARTWIDGET_H
+#define MODELTABLECHARTWIDGET_H
+
+#include <QtWidgets/QWidget>
+#include <QtCharts/QHorizontalBarSeries>
+#include <QtCharts/QValueAxis>
+#include "rankingtablemodel.h"
+#include "execscriptsslavethread.h"
+
+QT_CHARTS_USE_NAMESPACE
+
+class ModelTableChartWidget : public QWidget
+{
+    Q_OBJECT
+
+public:
+    ModelTableChartWidget(QWidget *parent = 0);
+
+private:
+    RankingTableModel *     m_model;
+    QTimer *                m_timerPolling;
+    ExecScriptsSlaveThread  m_scriptThread;
+    // 横向条数据序列
+    QHorizontalBarSeries *  m_barSeries;
+    QValueAxis *            m_axisX;
+
+
+public slots:
+    void fetchMemInfo();
+    void processScriptResult(const QString & result);
+};
+
+#endif // MODELTABLECHARTWIDGET_H
