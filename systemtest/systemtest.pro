@@ -14,6 +14,7 @@ TEMPLATE = app
 QT += widgets network
 QT += testlib
 QT += charts
+QT += printsupport
 CONFIG += thread
 
 
@@ -56,7 +57,9 @@ SOURCES += main.cpp\
     Charts/cprocmemranking.cpp \
     Charts/modeltablechartwidget.cpp \
     Charts/rankingtablemodel.cpp \
-    Charts/execscriptsslavethread.cpp
+    Charts/execscriptsslavethread.cpp \
+    Utils/chartcallout.cpp \
+    Report/systemperfreport.cpp
 
 HEADERS  += main_widget.h \
     tool_button.h \
@@ -92,7 +95,9 @@ HEADERS  += main_widget.h \
     Charts/cprocmemranking.h \
     Charts/modeltablechartwidget.h \
     Charts/rankingtablemodel.h \
-    Charts/execscriptsslavethread.h
+    Charts/execscriptsslavethread.h \
+    Utils/chartcallout.h \
+    Report/systemperfreport.h
 
 RESOURCES += \
     sources/resources.qrc
@@ -454,7 +459,8 @@ DISTFILES += \
     debug/Scripts/testpwd/testpwd.sh \
     debug/Scripts/security/5/bin.2015-01-20_15_55_38.file \
     debug/Scripts/sys_test/体检/一键测评/测评标准 \
-    debug/NewScripts/memory/mem_ranking.sh
+    debug/NewScripts/memory/mem_ranking.sh \
+    debug/NewScripts/memory/mem_ranking_copy.sh
 
 FORMS +=
 

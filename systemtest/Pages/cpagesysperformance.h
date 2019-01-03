@@ -56,6 +56,10 @@ protected slots:
     void networkPerformance();
     void outputNetperfInfo();
     void outputLineInfo();
+    void procFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void procErrorOccurred(QProcess::ProcessError error);
+
+    void testExportFiles();
 
 public:
 //    CPageSysPerformance();

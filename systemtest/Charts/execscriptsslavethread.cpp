@@ -50,12 +50,15 @@ void ExecScriptsSlaveThread::run()
 
         // 启动进程，并等待结束
         m_procShell->start(strCmd, strParams);
+        QString errorInfo;
         bool bReadyRead = m_procShell->waitForReadyRead();
         // 进程结束后，将数据读取出来
         if (bReadyRead) {
             m_result = m_procShell->readAllStandardOutput();
             // 发出脚本执行完成的信号
             emit scriptResult(m_result);
+        } else {
+            errorInfo = m_procShell->readAllStandardError();
         }
 
         m_bExecShell = false;

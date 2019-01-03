@@ -80,6 +80,10 @@ QVariant RankingTableModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+QVariant RankingTableModel::cellData(int row, int column) {
+    return m_data[row]->at(column);
+}
+
 bool RankingTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (index.isValid() && role == Qt::EditRole) {

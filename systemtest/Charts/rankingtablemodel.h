@@ -27,6 +27,8 @@ public:
     void setRowData(int row, QStringList dataList);
     void refresh();
 
+    QVariant cellData(int row, int column);
+
 private:
     QList<QVector<QString> * > m_data;
     QHash<QString, QRect> m_mapping;

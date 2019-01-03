@@ -2,8 +2,13 @@
 
 #include <QHBoxLayout>
 #include <QLineEdit>
+#include <QPrinter>
 #include <QProcess>
 #include <qdebug.h>
+#include <QPainter>
+#include <QFile>
+#include <QPdfWriter>
+#include <QDateTime>
 
 #include <Utils/csysutils.h>
 #include <Utils/cwebutils.h>
@@ -38,6 +43,8 @@ CPageSysPerformance::CPageSysPerformance(QWidget *parent) : QWidget(parent)
     connect(m_buttonPingURL, SIGNAL(clicked()), this, SLOT(pingURL()));
     connect(m_buttonPerformance, SIGNAL(clicked()), this, SLOT(networkPerformance()));
 
+    connect(m_buttonTest, SIGNAL(clicked()), this, SLOT(testExportFiles()));
+
     this->setAutoFillBackground(true);
 
 
@@ -69,6 +76,162 @@ CPageSysPerformance::~CPageSysPerformance()
 
 }
 
+#if 1
+void CPageSysPerformance::testExportFiles() {
+    QFile pdfFile("./test_QPdfWriter.pdf");
+        pdfFile.open(QIODevice::WriteOnly);
+        QPdfWriter *pdfWriter = new QPdfWriter(&pdfFile);
+        pdfWriter->setPageSize(QPagedPaintDevice::A4);
+        pdfWriter->setResolution(300);//像素3508*2479
+        pdfWriter->setTitle("Report");
+        int pageMargin = 100;
+        pdfWriter->setPageMargins(QMarginsF(pageMargin, pageMargin, pageMargin, pageMargin));
+        QDateTime currentTime = QDateTime::currentDateTime();
+        QString timeString = currentTime.toString("yyyy-MM-dd hh:mm:ss ddd");
+        QPainter *pdfPainter = new QPainter(pdfWriter);
+        QTextOption option(Qt::AlignHCenter | Qt::AlignVCenter);
+        option.setWrapMode(QTextOption::WordWrap);
+        int yCurrentP = 0;
+        int xCurrentP = 0;
+        int contentWidth = 2479 - pageMargin;
+        QFont font;
+        font.family();
+    //    font.setFamily("simsun.ttc");
+        font.setFamily("Times New Roman");
+        int fontSize =9;
+        int textHeight = 90;
+        font.setPointSize(fontSize);
+        pdfPainter->setFont(font);
+        QPixmap titleImage("./logo2.png");
+        //    pdfPainter->drawPixmap(xCurrentP, yCurrentP, titleImage.width(), titleImage.height(), titleImage);
+        //    pdfPainter->scale(0.5, 0.5);
+        pdfPainter->drawPixmap(xCurrentP, yCurrentP, titleImage.width()/2, titleImage.height()/2, titleImage);
+        //    pdfPainter->scale(1.5, 1.5);
+        option.setAlignment(Qt::AlignRight | Qt::AlignBottom);
+        int pageIndex = 1;
+        int totalPageIndex = 2;
+        QString pageIndexString = QString::number(pageIndex) + "/" + QString::number(totalPageIndex);
+        pdfPainter->drawText(QRect(xCurrentP, yCurrentP, contentWidth,titleImage.height()/2),
+                             pageIndexString, option);
+        yCurrentP += (titleImage.height()/2 + 4);
+        QPen pen;
+        int penHeigth = 4;
+        pen.setWidth(penHeigth);
+        pen.setColor(Qt::blue);
+        pdfPainter->setPen(pen);
+        pdfPainter->drawLine(xCurrentP, yCurrentP, contentWidth, yCurrentP);
+        pen.setColor(Qt::black);
+        pdfPainter->setPen(pen);
+        yCurrentP += penHeigth;
+        yCurrentP += 100;
+        fontSize =22;
+        font.setPointSize(fontSize);
+        pdfPainter->setFont(font);
+        option.setAlignment(Qt::AlignCenter);
+        pdfPainter->drawText(QRect(0, yCurrentP, contentWidth, textHeight),
+                             QString("性能测试报告"), option);
+        yCurrentP += (textHeight + 100);
+        fontSize = 16;
+        font.setPointSize(fontSize);
+        pdfPainter->setFont(font);
+        option.setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        pdfPainter->drawText(QRect(xCurrentP, yCurrentP, contentWidth, 80),
+                             QString("CPU使用情况"));
+        yCurrentP += (80 + 100);
+        xCurrentP += 200;
+        option.setWrapMode(QTextOption::WordWrap);
+        pdfPainter->drawText(QRect(xCurrentP, yCurrentP, contentWidth - xCurrentP, 400),
+                             QString("内存使用情况"),
+                             option);
+        yCurrentP +=(400 +100);
+        QPixmap roxImage("./logo2.png");
+        //    int multipe = rect.width() / roxImage.width();
+        //    pdfPainter->scale(multipe, multipe);
+        pdfPainter->drawPixmap(0, yCurrentP, roxImage.width()/2, roxImage.height()/2, roxImage);
+        //    pdfPainter->scale(1, 1);
+        QPixmap famImage("./logo2.png");
+        //    multipe = rect.width()/ famImage.width();
+        //    pdfPainter->scale(multipe, multipe);
+        pdfPainter->drawPixmap(contentWidth/2, yCurrentP, famImage.width()/2, famImage.height()/2, famImage);
+        //    pdfPainter->scale(1, 1);
+        yCurrentP +=( std::max(roxImage.height(), famImage.height()) + 100);
+        xCurrentP = 0;
+        pdfPainter->drawText(QRect(xCurrentP, yCurrentP, contentWidth-xCurrentP, 80),
+                             QString("硬盘使用情况"), option);
+        QPixmap logoImage("./logo2.png");
+        yCurrentP = 3508-pageMargin -( logoImage.height()/2) + 4;
+        pen.setColor(Qt::blue);
+        pdfPainter->setPen(pen);
+        pdfPainter->drawLine(0, yCurrentP, contentWidth, yCurrentP);
+        yCurrentP = 3508-pageMargin -( logoImage.height()/2);
+        option.setAlignment(Qt::AlignLeft | Qt::AlignTop);
+        fontSize = 9;
+        font.setPointSize(fontSize);
+        pen.setColor(Qt::black);
+        pdfPainter->setPen(pen);
+        pdfPainter->drawPixmap(contentWidth-xCurrentP-logoImage.width()/2, yCurrentP, logoImage.width()/2, logoImage.height()/2, logoImage);
+        pdfPainter->setFont(font);
+        pdfPainter->drawText(QRect(0, yCurrentP, 600, logoImage.height()), timeString, option);
+        delete pdfPainter;
+        delete pdfWriter;
+        pdfFile.close();
+
+//    QFile pdfFile("./test_QPdfWriter.pdf");
+//    pdfFile.open(QIODevice::WriteOnly);
+//    QPdfWriter * pdfWriter = new QPdfWriter(&pdfFile);
+//    QPainter * pdfPainter = new QPainter(pdfWriter);
+
+//    pdfWriter->setPageSize(QPagedPaintDevice::A4);
+
+//    pdfPainter->drawText(QRect(100,100,2000,2000), "PDF文本示例--第一页");
+
+//    pdfWriter->newPage();
+//    pdfPainter->drawText(QRect(100,100,2000,2000), "PDF文本示例--第二页");
+//    delete pdfPainter;
+//    delete pdfWriter;
+
+//    pdfFile.close();
+}
+
+#else
+void CPageSysPerformance::testExportFiles() {
+    QPrinter printer;
+
+        printer.setOutputFormat(QPrinter::PdfFormat);//设置输出格式为pdf
+        printer.setPageSize(QPrinter::A4);//设置纸张大小为A4
+        printer.setOutputFileName("./test.pdf");//设置输出路径
+
+        QPainter painter(this);
+        painter.begin(&printer);
+
+        //正常使用painter 绘制文字、pixmap等在printer上
+        //要先画图片，然后画图片上面的内容，否则图片会覆盖其他内容
+        QPixmap pixmap("./logo2.png");
+        painter.drawPixmap(rect(), pixmap);
+
+        painter.setPen(Qt::blue);
+        painter.setFont(QFont("Arial", 30));
+        painter.drawText(rect(), Qt::AlignCenter, "Qt生成PDF......");
+
+
+        QPen pen;
+        pen.setWidth(40);
+        painter.drawLine(10,20,200,400);
+
+        QBrush brush;
+        pen.setColor(Qt::red);
+        brush.setColor(Qt::red);
+        brush.setStyle(Qt::SolidPattern);
+        painter.setBrush(brush);
+        painter.setPen(pen);
+        painter.drawRect(200,400,500,600);
+
+        //至此，文件被保存
+        painter.end();
+
+}
+#endif
+
 void CPageSysPerformance::curlURL()
 {
     CSysUtils::resetTimerClock();
@@ -92,7 +255,7 @@ void CPageSysPerformance::pingURL()
     qint64 elpasedTime = CSysUtils::getElapsedMilliSeconds();
 
     QString strTitle = "\n=============== 主站响应时间 ===============\n";
-    QString strOutput = QString("PING通: %1 ... ...\n共耗时：%2毫秒。\n").arg(m_inputURL->text()).arg(elpasedTime);
+    QString strOutput = QString("PING: %1 ... ...\n共耗时：%2毫秒。\n").arg(m_inputURL->text()).arg(elpasedTime);
 
     QString strOldRecord = m_textResult->placeholderText().left(512);
 
@@ -106,6 +269,8 @@ void CPageSysPerformance::networkPerformance()
     QString strClientCmd = "iperf3 -c " + strUrl;
 
     connect(m_procNetperf, SIGNAL(readyReadStandardOutput()), this, SLOT(outputNetperfInfo()));
+//    connect(m_procNetperf, SIGNAL(finished()), this, SLOT(procFinished()));
+//    connect(m_procNetperf, SIGNAL(errorOccurred()), this, SLOT(procErrorOccurred()));
     m_procNetperf->start(strClientCmd);
 //    connect(m_procNetperf, SIGNAL(readyRead()), this, SLOT(outputLineInfo()));
     bool bStarted = m_procNetperf->waitForStarted();
@@ -115,6 +280,20 @@ void CPageSysPerformance::networkPerformance()
 
 //    QString strOutput = m_procNetperf->readAllStandardOutput();
 
+}
+
+void CPageSysPerformance::procErrorOccurred(QProcess::ProcessError error) {
+    QString errorInfo;
+    errorInfo = m_procNetperf->readAllStandardError();
+}
+
+void CPageSysPerformance::procFinished(int exitCode, QProcess::ExitStatus exitStatus) {
+    QString errorInfo;
+    if (exitStatus == QProcess::NormalExit) {
+        outputNetperfInfo();
+    } else {
+        errorInfo = m_procNetperf->readAllStandardError();
+    }
 }
 
 void CPageSysPerformance::outputNetperfInfo(){
@@ -176,7 +355,7 @@ void CPageSysPerformance::initBandwidthWidget()
     m_buttonAccessURL->setText(tr("访问网址"));
     m_buttonAccessURL->setFont(fontButtonUrl);
     m_buttonPingURL = new QPushButton();
-    m_buttonPingURL->setText(tr("PING通"));
+    m_buttonPingURL->setText(tr("PING"));
     m_buttonPingURL->setFont(fontButtonUrl);
 
     m_buttonPerformance = new QPushButton();
@@ -186,7 +365,7 @@ void CPageSysPerformance::initBandwidthWidget()
     // 水平布局-1
     QHBoxLayout *widget_1_H_layout = new QHBoxLayout();
     QLabel * labelUrl = new QLabel();
-    labelUrl->setText("请输入URL：");
+    labelUrl->setText("请输入网址或IP：");
     widget_1_H_layout->addWidget(labelUrl, 0, Qt::AlignCenter);
     widget_1_H_layout->addWidget(m_inputURL, 70, Qt::AlignCenter);
     widget_1_H_layout->addStretch();
@@ -215,6 +394,8 @@ void CPageSysPerformance::initReportWidget()
 {
     m_widgetAnalyzeReport = new QWidget();
     m_buttonTest = new QPushButton();
+
+    m_buttonTest->setText("生成PDF文件");
 
     QVBoxLayout *widget_1_V_layout = new QVBoxLayout();
     widget_1_V_layout->addWidget(m_buttonTest, 0, Qt::AlignCenter);
