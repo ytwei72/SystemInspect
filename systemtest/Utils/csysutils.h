@@ -18,6 +18,10 @@ public:
     static qint64 getClockStartTimeStamp();
     static void setClockStartTimeStamp(const qint64 &value);
 
+    static bool isFileExist(QString fullFilePath);
+    static bool isDirExist(QString fullPath);
+    static bool checkDir(QString fullPath, bool bAlwaysMake = false);
+
 public:
 //    static qint64 clockStartTimeStamp;
 

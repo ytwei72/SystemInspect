@@ -13,6 +13,7 @@
 #include <Utils/csysutils.h>
 #include <Utils/cwebutils.h>
 
+
 CPageSysPerformance::CPageSysPerformance(QWidget *parent) : QWidget(parent)
 {
     // 初始化左侧功能列表
@@ -268,51 +269,26 @@ void CPageSysPerformance::networkPerformance()
     m_procNetperf = new QProcess();
     QString strClientCmd = "iperf3 -c " + strUrl;
 
-    connect(m_procNetperf, SIGNAL(readyReadStandardOutput()), this, SLOT(outputNetperfInfo()));
-//    connect(m_procNetperf, SIGNAL(finished()), this, SLOT(procFinished()));
-//    connect(m_procNetperf, SIGNAL(errorOccurred()), this, SLOT(procErrorOccurred()));
+    connect(m_procNetperf, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(procFinished(int, QProcess::ExitStatus)));
     m_procNetperf->start(strClientCmd);
-//    connect(m_procNetperf, SIGNAL(readyRead()), this, SLOT(outputLineInfo()));
     bool bStarted = m_procNetperf->waitForStarted();
 
     m_textResult->setPlaceholderText("正在进行检测，请稍等 ... ...");
-//    while (m_procNetperf->readyReadStandardOutput())
-
-//    QString strOutput = m_procNetperf->readAllStandardOutput();
-
 }
 
-void CPageSysPerformance::procErrorOccurred(QProcess::ProcessError error) {
-    QString errorInfo;
-    errorInfo = m_procNetperf->readAllStandardError();
-}
 
 void CPageSysPerformance::procFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     QString errorInfo;
-    if (exitStatus == QProcess::NormalExit) {
-        outputNetperfInfo();
+    if (exitCode == 0) {
+        QString strOutput = m_procNetperf->readAllStandardOutput();
+        qDebug()<<"final result: " + strOutput;
+        m_textResult->setPlaceholderText(strOutput);
+
+        m_procNetperf->waitForFinished();
+        m_procNetperf->deleteLater();
     } else {
         errorInfo = m_procNetperf->readAllStandardError();
-    }
-}
-
-void CPageSysPerformance::outputNetperfInfo(){
-    QString strOutput = m_procNetperf->readAllStandardOutput();
-    qDebug()<<"final result: " + strOutput;
-    m_textResult->setPlaceholderText(strOutput);
-
-    m_procNetperf->waitForFinished();
-    m_procNetperf->deleteLater();
-}
-
-void CPageSysPerformance::outputLineInfo(){
-    QString strOldOutput = m_textResult->placeholderText();
-
-    while (m_procNetperf->canReadLine()) {
-        QString strLine = m_procNetperf->readLine();
-        qDebug()<<"Read Line: " + strLine;
-        strOldOutput += strLine;
-        m_textResult->setPlaceholderText(strOldOutput);
+        m_textResult->setPlaceholderText(errorInfo);
     }
 }
 
@@ -392,17 +368,18 @@ void CPageSysPerformance::initBandwidthWidget()
 
 void CPageSysPerformance::initReportWidget()
 {
-    m_widgetAnalyzeReport = new QWidget();
-    m_buttonTest = new QPushButton();
+    m_widgetAnalyzeReport = new SystemPerfReport();
+//    m_widgetAnalyzeReport = new QWidget();
+//    m_buttonTest = new QPushButton();
 
-    m_buttonTest->setText("生成PDF文件");
+//    m_buttonTest->setText("生成PDF文件");
 
-    QVBoxLayout *widget_1_V_layout = new QVBoxLayout();
-    widget_1_V_layout->addWidget(m_buttonTest, 0, Qt::AlignCenter);
-    QHBoxLayout *main_layout = new QHBoxLayout();
-    main_layout->addLayout(widget_1_V_layout);
+//    QVBoxLayout *widget_1_V_layout = new QVBoxLayout();
+//    widget_1_V_layout->addWidget(m_buttonTest, 0, Qt::AlignCenter);
+//    QHBoxLayout *main_layout = new QHBoxLayout();
+//    main_layout->addLayout(widget_1_V_layout);
 
-    m_widgetAnalyzeReport->setLayout(main_layout);
+//    m_widgetAnalyzeReport->setLayout(main_layout);
 }
 
 

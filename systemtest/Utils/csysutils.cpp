@@ -1,6 +1,8 @@
 #include "csysutils.h"
 
 #include <QDateTime>
+#include <QDir>
+#include <QFileInfo>
 
 static qint64 clockStartTimeStamp;
 
@@ -34,4 +36,35 @@ qint64 CSysUtils::getClockStartTimeStamp()
 void CSysUtils::setClockStartTimeStamp(const qint64 &value)
 {
     clockStartTimeStamp = value;
+}
+
+bool CSysUtils::isFileExist(QString fullFilePath) {
+    QFileInfo fileInfo(fullFilePath);
+    if(fileInfo.exists())
+    {
+        return true;
+    }
+    return false;
+}
+
+bool CSysUtils::isDirExist(QString fullPath)
+{
+    QDir dir(fullPath);
+    if(dir.exists())
+    {
+      return true;
+    }
+    return false;
+}
+
+bool CSysUtils::checkDir(QString fullPath, bool bAlwaysMake) {
+    if (CSysUtils::isDirExist(fullPath)) {
+        return true;
+    } else if (!bAlwaysMake) {
+        return false;
+    } else {
+        QDir dir(fullPath);
+        bool bSuccess = dir.mkdir(fullPath);
+        return bSuccess;
+    }
 }

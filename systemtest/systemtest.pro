@@ -15,6 +15,7 @@ QT += widgets network
 QT += testlib
 QT += charts
 QT += printsupport
+#QT += axcontainer
 CONFIG += thread
 
 
@@ -59,7 +60,13 @@ SOURCES += main.cpp\
     Charts/rankingtablemodel.cpp \
     Charts/execscriptsslavethread.cpp \
     Utils/chartcallout.cpp \
-    Report/systemperfreport.cpp
+    Report/systemperfreport.cpp \
+    CustomWidgets/mytreemodel.cpp \
+    CustomWidgets/treeitem.cpp \
+    Report/cpugeneralinfo.cpp \
+    Utils/transformutil.cpp \
+    Report/cpuusageinfo.cpp \
+    Report/taskrunninginfo.cpp
 
 HEADERS  += main_widget.h \
     tool_button.h \
@@ -97,7 +104,13 @@ HEADERS  += main_widget.h \
     Charts/rankingtablemodel.h \
     Charts/execscriptsslavethread.h \
     Utils/chartcallout.h \
-    Report/systemperfreport.h
+    Report/systemperfreport.h \
+    CustomWidgets/mytreemodel.h \
+    CustomWidgets/treeitem.h \
+    Report/cpugeneralinfo.h \
+    Utils/transformutil.h \
+    Report/cpuusageinfo.h \
+    Report/taskrunninginfo.h
 
 RESOURCES += \
     sources/resources.qrc

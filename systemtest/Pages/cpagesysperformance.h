@@ -10,7 +10,7 @@
 #include <QStackedWidget>
 #include <QTextBrowser>
 
-
+#include <Report/systemperfreport.h>
 
 class CPageSysPerformance : public QWidget
 {
@@ -46,7 +46,8 @@ private:
     QProcess *          m_procNetperf;
 
     // 展示性能分析图表的widget
-    QWidget *           m_widgetAnalyzeReport;
+//    QWidget *           m_widgetAnalyzeReport;
+    SystemPerfReport *    m_widgetAnalyzeReport;
     // 临时测试按钮
     QPushButton *       m_buttonTest;
 
@@ -54,10 +55,7 @@ protected slots:
     void curlURL();
     void pingURL();
     void networkPerformance();
-    void outputNetperfInfo();
-    void outputLineInfo();
     void procFinished(int exitCode, QProcess::ExitStatus exitStatus);
-    void procErrorOccurred(QProcess::ProcessError error);
 
     void testExportFiles();
 
