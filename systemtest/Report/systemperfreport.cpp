@@ -24,7 +24,7 @@ void SystemPerfReport::initReportLayout() {
     m_buttonTest->setText("生成系统性能PDF");
 
     QStringList headers;
-    headers << tr("名称") << tr("值");
+    headers << tr("名称") << tr("内容");
     m_treeSystemReport = new MyTreeModel(headers, "");
 
     QTreeView * viewReport = new QTreeView();
@@ -63,20 +63,53 @@ void SystemPerfReport::generateReport() {
         return;
     }
 
+    if (!getMemoryRankInfo()) {
+        // TODO: 目前版本不做失败处理
+        return;
+    }
+
 
 
 //    openReport();
 }
 
 bool SystemPerfReport::getMemoryGeneralInfo() {
+    // 取内存信息
+    if ( !m_memGeneralInfo.fetchInfo() )
+        return false;
+
     // 在表中插入内存信息行
     updateTitleNode(ROW_MEM_GENERAL_INFO, "内存基本信息");
-    QModelIndex indexMemInfo = m_treeSystemReport->index(1, 0);
+    QModelIndex indexMemInfo = m_treeSystemReport->index(ROW_MEM_GENERAL_INFO, 0);
+
+    QStringList keyList = m_memGeneralInfo.getKeyList();
+    for (int i=0; i<keyList.count(); i++) {
+        QString value = m_memGeneralInfo.getKeyValue(keyList[i]);
+        updateChildNode(i, keyList[i], value + " KB", indexMemInfo);
+    }
 
     return true;
 }
 
-void SystemPerfReport::updateTitleNode(int rowIndex, QString title) {
+bool SystemPerfReport::getMemoryRankInfo() {
+    // 获取内存占用排行信息
+    if ( !m_memRankInfo.fetchInfo() )
+        return false;
+
+    // 在表中插入内存占用排行
+    updateTitleNode(ROW_MEM_RATE_RANKING, "内存占用排行");
+    QModelIndex indexMemRank = m_treeSystemReport->index(ROW_MEM_RATE_RANKING, 0);
+
+    for (int i=0; i<m_memRankInfo.getMemRankDataCount(); i++) {
+        TaskRunningInfo taskInfo = m_memRankInfo.getMemRankData(i);
+        QString procName = QString("(%1%) %2").arg(taskInfo.memRate()).arg(taskInfo.cmd());
+        updateChildNode(i, i+1, procName, indexMemRank);
+    }
+
+    return true;
+}
+
+void SystemPerfReport::updateTitleNode(int rowIndex, QVariant title) {
     QModelIndex indexItem;
 
     // 查找指定行是否存在
@@ -90,7 +123,7 @@ void SystemPerfReport::updateTitleNode(int rowIndex, QString title) {
     m_treeSystemReport->setData(indexItem, title);
 }
 
-void SystemPerfReport::updateChildNode(int rowIndex, QString key, QVariant value, QModelIndex parentIndex) {
+void SystemPerfReport::updateChildNode(int rowIndex, QVariant key, QVariant value, QModelIndex parentIndex) {
     QModelIndex indexItem;
 
     // 查找指定行是否存在
@@ -142,6 +175,13 @@ bool SystemPerfReport::getCpuUsageInfo() {
     updateChildNode(5, "软中断", m_cpuUsageInfo.getSoftIntRate(), indexCpuUsageInfo);
 
     //! CPU使用率任务排行
+    updateTitleNode(ROW_CPU_RATE_RANKING, "CPU占用排行");
+    QModelIndex indexCpuRateRank = m_treeSystemReport->index(ROW_CPU_RATE_RANKING, 0);
+    for (int i=0; i<m_cpuUsageInfo.getCpuRankDataCount(); i++) {
+        TaskRunningInfo taskInfo = m_cpuUsageInfo.getCpuRankData(i);
+        QString procName = QString("(%1%) %2").arg(taskInfo.cpuRate()).arg(taskInfo.cmd());
+        updateChildNode(i, i+1, procName, indexCpuRateRank);
+    }
 
     return true;
 }

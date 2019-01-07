@@ -13,6 +13,10 @@ public:
     static QJsonObject stringToJson(QString jsonString);
     static QString jsonToString(QJsonObject jsonObject);
 
+    static void clearJsonObject(QJsonObject * jsonObject);
+
+    static QString trimSpace(QString inString);
+
 };
 
 #endif // TRANSFORMUTIL_H

@@ -45,12 +45,12 @@ void TaskRunningInfo::setMemRate(float memRate)
     m_memRate = memRate;
 }
 
-float TaskRunningInfo::cpuTime() const
+QString TaskRunningInfo::cpuTime() const
 {
     return m_cpuTime;
 }
 
-void TaskRunningInfo::setCpuTime(float cpuTime)
+void TaskRunningInfo::setCpuTime(QString cpuTime)
 {
     m_cpuTime = cpuTime;
 }

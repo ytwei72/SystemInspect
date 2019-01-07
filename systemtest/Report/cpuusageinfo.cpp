@@ -1,10 +1,11 @@
 #include "cpuusageinfo.h"
+#include "Utils/transformutil.h"
 
 #include <QProcess>
 
 CpuUsageInfo::CpuUsageInfo()
 {
-
+    m_maxTaskCount = 16;
 }
 
 bool CpuUsageInfo::fetchInfo() {
@@ -72,27 +73,28 @@ void CpuUsageInfo::parseCpuRankData(QString rankData){
 
     QStringList detailsList;
     TaskRunningInfo runInfo;
+    m_cpuRankingList.clear();
     foreach (QString row, rankList) {
         if (row.isEmpty())
             continue;
 
-        //   使用一个空格替换掉连续的多余的空格
-        row = row.replace(QRegExp("\\s{1,}"), " ");
+        // 使用一个空格替换掉连续的多余的空格，并去掉首尾的空格
+        row = TransformUtil::trimSpace(row);
+//        row = row.replace(QRegExp("\\s{1,}"), " ");
+//        row = row.trimmed();
 
         detailsList = row.split(" ");
         runInfo.setPid(detailsList[0].toInt());
         runInfo.setCpuRate(detailsList[8].toFloat());
         runInfo.setMemRate(detailsList[9].toFloat());
-
-        QString cpuTime = detailsList[10];
-        QStringList cpuTimeList = cpuTime.split(":");
-        // TODO: 可能没有分钟数
-        runInfo.setCpuTime(cpuTimeList[0].toFloat()*60 + cpuTimeList[1].toFloat());
-
+        runInfo.setCpuTime(detailsList[10]);
         runInfo.setCmd(detailsList[11]);
         runInfo.setStatus(detailsList[7]);
 
         m_cpuRankingList.append(runInfo);
+
+        if (m_cpuRankingList.count() >= m_maxTaskCount)
+            break;
     }
 
 }

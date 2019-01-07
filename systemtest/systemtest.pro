@@ -66,7 +66,10 @@ SOURCES += main.cpp\
     Report/cpugeneralinfo.cpp \
     Utils/transformutil.cpp \
     Report/cpuusageinfo.cpp \
-    Report/taskrunninginfo.cpp
+    Report/taskrunninginfo.cpp \
+    Report/memgeneralinfo.cpp \
+    Report/memusagerate.cpp \
+    Report/diskgeneralinfo.cpp
 
 HEADERS  += main_widget.h \
     tool_button.h \
@@ -110,7 +113,10 @@ HEADERS  += main_widget.h \
     Report/cpugeneralinfo.h \
     Utils/transformutil.h \
     Report/cpuusageinfo.h \
-    Report/taskrunninginfo.h
+    Report/taskrunninginfo.h \
+    Report/memgeneralinfo.h \
+    Report/memusagerate.h \
+    Report/diskgeneralinfo.h
 
 RESOURCES += \
     sources/resources.qrc

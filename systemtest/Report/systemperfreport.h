@@ -7,6 +7,8 @@
 #include "Report/cpugeneralinfo.h"
 #include "Report/cpuusageinfo.h"
 #include "Report/taskrunninginfo.h"
+#include "Report/memgeneralinfo.h"
+#include "Report/memusagerate.h"
 
 class SystemPerfReport : public QWidget
 {
@@ -27,8 +29,8 @@ private:
 
     void openReport();
 
-    void updateTitleNode(int rowIndex, QString title);
-    void updateChildNode(int rowIndex, QString key, QVariant value, QModelIndex parentIndex);
+    void updateTitleNode(int rowIndex, QVariant title);
+    void updateChildNode(int rowIndex, QVariant key, QVariant value, QModelIndex parentIndex);
 
     // 获取CPU基本信息
     bool getCpuGeneralInfo();
@@ -44,6 +46,11 @@ private:
 
     // 获取内存信息
     bool getMemoryGeneralInfo();
+    MemGeneralInfo      m_memGeneralInfo;
+
+    // 获取内存占用排行信息
+    bool getMemoryRankInfo();
+    MemUsageRate        m_memRankInfo;
 
     // 临时测试按钮
     QPushButton *       m_buttonTest;

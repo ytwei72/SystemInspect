@@ -49,6 +49,8 @@ public:
     void setSoftIntRate(float softIntRate);
 
     void parseCpuRankData(QString rankData);
+    int getCpuRankDataCount() { return m_cpuRankingList.count(); }
+    TaskRunningInfo getCpuRankData(int index) { return m_cpuRankingList[index]; }
 
 private:
     //! Task信息

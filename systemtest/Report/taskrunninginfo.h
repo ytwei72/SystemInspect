@@ -22,8 +22,8 @@ public:
     float memRate() const;
     void setMemRate(float memRate);
 
-    float cpuTime() const;
-    void setCpuTime(float cpuTime);
+    QString cpuTime() const;
+    void setCpuTime(QString cpuTime);
 
     QString status() const;
     void setStatus(const QString &status);
@@ -37,8 +37,8 @@ private:
     float       m_cpuRate;
     // 内存占用率
     float       m_memRate;
-    // CPU使用时间总计，单位：1/100秒
-    float       m_cpuTime;
+    // CPU使用时间总计，字符串形式，单位：1/100秒
+    QString     m_cpuTime;
     // 进程状态：D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程
     QString     m_status;
 };
