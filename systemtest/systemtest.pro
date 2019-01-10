@@ -69,7 +69,10 @@ SOURCES += main.cpp\
     Report/taskrunninginfo.cpp \
     Report/memgeneralinfo.cpp \
     Report/memusagerate.cpp \
-    Report/diskgeneralinfo.cpp
+    Report/diskgeneralinfo.cpp \
+    Report/diskfsinfo.cpp \
+    Report/osgeneralinfo.cpp \
+    Report/networkgeneralinfo.cpp
 
 HEADERS  += main_widget.h \
     tool_button.h \
@@ -116,7 +119,10 @@ HEADERS  += main_widget.h \
     Report/taskrunninginfo.h \
     Report/memgeneralinfo.h \
     Report/memusagerate.h \
-    Report/diskgeneralinfo.h
+    Report/diskgeneralinfo.h \
+    Report/diskfsinfo.h \
+    Report/osgeneralinfo.h \
+    Report/networkgeneralinfo.h
 
 RESOURCES += \
     sources/resources.qrc

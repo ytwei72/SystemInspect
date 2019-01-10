@@ -22,6 +22,8 @@ public:
     static bool isDirExist(QString fullPath);
     static bool checkDir(QString fullPath, bool bAlwaysMake = false);
 
+    static QString execCmd(QString cmd);
+
 public:
 //    static qint64 clockStartTimeStamp;
 

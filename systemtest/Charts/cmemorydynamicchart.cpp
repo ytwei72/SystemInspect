@@ -65,10 +65,13 @@ void CMemoryDynamicChart::initMemChartWidget() {
     m_chartMemRate->addSeries(m_areaSeriesMemRate);
     m_chartMemRate->setTitle("内存占用监测(%)");
     m_chartMemRate->createDefaultAxes();
+    m_axisY = new QValueAxis();
+    m_chartMemRate->setAxisY(m_axisY, m_areaSeriesMemRate);
     m_chartMemRate->axisY()->setRange(0, 100);
+    m_axisY->setMinorTickCount(4);
     m_chartMemRate->axisX()->setRange(0, m_nMemChartWindowWidth);
     m_chartMemRate->setAnimationOptions(QChart::SeriesAnimations);
-    m_chartMemRate->setTheme(QChart::ChartThemeDark);
+//    m_chartMemRate->setTheme(QChart::ChartThemeDark);
 
     // 新建一个容纳图表的视图
 //    m_chartViewMemRate = new QChartView(m_chartMemRate);
@@ -76,19 +79,20 @@ void CMemoryDynamicChart::initMemChartWidget() {
     m_chartViewMemRate->setRenderHint(QPainter::Antialiasing);
 
 
-    QPen pen(0x00CED1);
+    QPen pen(0x4DA60C);
     pen.setWidth(2);
     m_areaSeriesMemRate->setPen(pen);
 
     QLinearGradient gradient(QPointF(0, 0), QPointF(0, 1));
-    gradient.setColorAt(0.0, 0xE0FF4500);
-    gradient.setColorAt(1.0, 0xE07FFFD4);
+    gradient.setColorAt(0.0, 0xEFF7E9);
+    gradient.setColorAt(1.0, 0xEFF7E9);
 //    gradient.setColorAt(0.0, 0xEE6363);
 //    gradient.setColorAt(1.0, 0x7FFFD4);
     gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
 //    QBrush brush(gradient);
 //    brush.setStyle(Qt::VerPattern);
     m_areaSeriesMemRate->setBrush(gradient);
+    m_areaSeriesMemRate->setOpacity(0.5);
 
 }
 
@@ -137,8 +141,7 @@ void CMemoryDynamicChart::refreshMemInfo() {
 void CMemoryDynamicChart::addNewMemoryRatePoint(double fRate) {
     // 添加新的内存使用率数据到图表中
     m_seriesMemRate->append(m_nMemChartPointIndex, fRate);
-    m_seriesMemRateBase->append(m_nMemChartPointIndex, 0);
-    m_nMemChartPointIndex++;
+    m_seriesMemRateBase->append(m_nMemChartPointIndex, -10000);
 
     // 根据数据大小调整Y轴的尺度
 //    if (fRate > 90)
@@ -151,7 +154,9 @@ void CMemoryDynamicChart::addNewMemoryRatePoint(double fRate) {
 //        m_chartMemRate->axisY()->setRange(0, 100);
 
     // 调整横坐标（曲线向左移动）
-    if (m_nMemChartPointIndex > m_nMemChartWindowWidth)
-        m_chartMemRate->axisX()->setRange(m_nMemChartPointIndex-m_nMemChartWindowWidth, m_nMemChartPointIndex);
+//    if (m_nMemChartPointIndex > m_nMemChartWindowWidth)
+        m_chartMemRate->axisX()->setRange(m_nMemChartPointIndex - m_nMemChartWindowWidth, m_nMemChartPointIndex);
+
+    m_nMemChartPointIndex++;
 
 }

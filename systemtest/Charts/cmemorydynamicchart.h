@@ -6,6 +6,7 @@
 #include <QAreaSeries>
 #include <QHBoxLayout>
 #include <QProcess>
+#include <QValueAxis>
 #include <QWidget>
 #include "common.h"
 #include "czoomchartview.h"
@@ -48,6 +49,7 @@ private:
     QChart *                m_chartShareMem;
     QChartView *            m_chartViewShareMem;
     QChart *                m_chartBuffMem;
+    QValueAxis *            m_axisY;
     CZoomChartView *        m_chartViewBuffMem;
 
     // 本布局的主布局

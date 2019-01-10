@@ -9,6 +9,9 @@
 #include "Report/taskrunninginfo.h"
 #include "Report/memgeneralinfo.h"
 #include "Report/memusagerate.h"
+#include "Report/diskgeneralinfo.h"
+#include "Report/osgeneralinfo.h"
+#include "Report/networkgeneralinfo.h"
 
 class SystemPerfReport : public QWidget
 {
@@ -18,19 +21,26 @@ public:
 
 private:
     enum {
-        ROW_CPU_GENERAL_INFO = 0,
+        ROW_OS_GENERAL_INFO = 0,
+        ROW_CPU_GENERAL_INFO,
         ROW_TASKS_INFO,
         ROW_CPU_USAGE_INFO,
         ROW_CPU_RATE_RANKING,
         ROW_MEM_GENERAL_INFO,
         ROW_MEM_RATE_RANKING,
+        ROW_DISK_INFO,
+        ROW_NETWORK_INFO,
     };
     void initReportLayout();
 
     void openReport();
 
-    void updateTitleNode(int rowIndex, QVariant title);
-    void updateChildNode(int rowIndex, QVariant key, QVariant value, QModelIndex parentIndex);
+    QModelIndex updateTitleNode(int rowIndex, QVariant title);
+    QModelIndex updateChildNode(int rowIndex, QVariant key, QVariant value, QModelIndex parentIndex);
+
+    // 获取系统信息
+    bool getOsGeneralInfo();
+    OsGeneralInfo       m_osGeneralInfo;
 
     // 获取CPU基本信息
     bool getCpuGeneralInfo();
@@ -52,8 +62,19 @@ private:
     bool getMemoryRankInfo();
     MemUsageRate        m_memRankInfo;
 
-    // 临时测试按钮
-    QPushButton *       m_buttonTest;
+    // 获取磁盘信息
+    bool getDiskInfo();
+    DiskGeneralInfo     m_diskGeneralInfo;
+
+    // 获取网卡信息
+    bool getNetworkInfo();
+    NetworkGeneralInfo  m_netGeneralInfo;
+
+
+    // 获取系统信息按钮
+    QPushButton *       m_buttonGetSysInfo;
+    // 生成报告按钮
+    QPushButton *       m_buttonGenerateReport;
 
     // 报告临时文件路径，PDF格式
     QString             m_pdfReportFile;
@@ -64,6 +85,7 @@ private:
 signals:
 
 public slots:
+    void getSystemInfo();
     void generateReport();
 
 };

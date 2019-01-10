@@ -3,6 +3,7 @@
 #include <QDateTime>
 #include <QDir>
 #include <QFileInfo>
+#include <QProcess>
 
 static qint64 clockStartTimeStamp;
 
@@ -67,4 +68,17 @@ bool CSysUtils::checkDir(QString fullPath, bool bAlwaysMake) {
         bool bSuccess = dir.mkdir(fullPath);
         return bSuccess;
     }
+}
+
+QString CSysUtils::execCmd(QString cmd) {
+    QProcess proc;
+    proc.start(cmd);
+    proc.waitForFinished();
+
+    QString errorInfo = proc.readAllStandardError();
+    if (!errorInfo.isEmpty())
+        return "";
+
+    QString result = proc.readAllStandardOutput();
+    return result.trimmed();
 }
