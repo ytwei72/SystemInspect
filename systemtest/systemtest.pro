@@ -72,7 +72,8 @@ SOURCES += main.cpp\
     Report/diskgeneralinfo.cpp \
     Report/diskfsinfo.cpp \
     Report/osgeneralinfo.cpp \
-    Report/networkgeneralinfo.cpp
+    Report/networkgeneralinfo.cpp \
+    Report/generatepdfreport.cpp
 
 HEADERS  += main_widget.h \
     tool_button.h \
@@ -122,7 +123,8 @@ HEADERS  += main_widget.h \
     Report/diskgeneralinfo.h \
     Report/diskfsinfo.h \
     Report/osgeneralinfo.h \
-    Report/networkgeneralinfo.h
+    Report/networkgeneralinfo.h \
+    Report/generatepdfreport.h
 
 RESOURCES += \
     sources/resources.qrc

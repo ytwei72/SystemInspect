@@ -6,6 +6,7 @@
 #include <QUrl>
 #include "common.h"
 #include "Utils/csysutils.h"
+#include "Report/generatepdfreport.h"
 
 
 #include <QMessageBox>
@@ -58,37 +59,37 @@ void SystemPerfReport::initReportLayout() {
 
 void SystemPerfReport::getSystemInfo() {
 
-    if (!getOsGeneralInfo()) {
+    if (!refreshOsGeneralInfo()) {
         // TODO: 目前版本不做失败处理
         return;
     }
 
-    if (!getCpuGeneralInfo()) {
+    if (!refreshCpuGeneralInfo()) {
         // TODO: 目前版本不做失败处理
         return;
     }
 
-    if (!getCpuUsageInfo()) {
+    if (!refreshCpuUsageInfo()) {
         // TODO: 目前版本不做失败处理
         return;
     }
 
-    if (!getMemoryGeneralInfo()) {
+    if (!refreshMemoryGeneralInfo()) {
         // TODO: 目前版本不做失败处理
         return;
     }
 
-    if (!getMemoryRankInfo()) {
+    if (!refreshMemoryRankInfo()) {
         // TODO: 目前版本不做失败处理
         return;
     }
 
-    if (!getDiskInfo()) {
+    if (!refreshDiskInfo()) {
         // TODO: 目前版本不做失败处理
         return;
     }
 
-    if (!getNetworkInfo()) {
+    if (!refreshNetworkInfo()) {
         // TODO: 目前版本不做失败处理
         return;
     }
@@ -98,10 +99,13 @@ void SystemPerfReport::getSystemInfo() {
 }
 
 void SystemPerfReport::generateReport() {
+    GeneratePdfReport pdfReport;
+    pdfReport.writeReport(this);
+
     openReport();
 }
 
-bool SystemPerfReport::getOsGeneralInfo() {
+bool SystemPerfReport::refreshOsGeneralInfo() {
     // 获取系统信息
     if (!m_osGeneralInfo.fetchInfo())
         return false;
@@ -121,7 +125,7 @@ bool SystemPerfReport::getOsGeneralInfo() {
     return true;
 }
 
-bool SystemPerfReport::getMemoryGeneralInfo() {
+bool SystemPerfReport::refreshMemoryGeneralInfo() {
     // 取内存信息
     if ( !m_memGeneralInfo.fetchInfo() )
         return false;
@@ -138,7 +142,7 @@ bool SystemPerfReport::getMemoryGeneralInfo() {
     return true;
 }
 
-bool SystemPerfReport::getMemoryRankInfo() {
+bool SystemPerfReport::refreshMemoryRankInfo() {
     // 获取内存占用排行信息
     if ( !m_memRankInfo.fetchInfo() )
         return false;
@@ -192,7 +196,7 @@ QModelIndex SystemPerfReport::updateChildNode(int rowIndex, QVariant key, QVaria
     return indexItem0;
 }
 
-bool SystemPerfReport::getCpuUsageInfo() {
+bool SystemPerfReport::refreshCpuUsageInfo() {
     // 获取CPU的运行信息
     if (!m_cpuUsageInfo.fetchInfo())
         return false;
@@ -229,7 +233,7 @@ bool SystemPerfReport::getCpuUsageInfo() {
     return true;
 }
 
-bool SystemPerfReport::getCpuGeneralInfo() {
+bool SystemPerfReport::refreshCpuGeneralInfo() {
     //  获取系统的CPU信息
     if ( !m_cpuGeneralInfo.fetchInfo() )
         return false;
@@ -249,7 +253,7 @@ bool SystemPerfReport::getCpuGeneralInfo() {
     return true;
 }
 
-bool SystemPerfReport::getDiskInfo() {
+bool SystemPerfReport::refreshDiskInfo() {
     // 获取磁盘信息
     if ( !m_diskGeneralInfo.fetchInfo() )
         return false;
@@ -286,7 +290,7 @@ void SystemPerfReport::openReport(){
     }
 }
 
-bool SystemPerfReport::getNetworkInfo() {
+bool SystemPerfReport::refreshNetworkInfo() {
     // 获取网络信息
     if ( !m_netGeneralInfo.fetchInfo() )
         return false;

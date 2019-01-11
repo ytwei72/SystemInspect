@@ -57,13 +57,13 @@ bool NetworkGeneralInfo::fetchInfo() {
         QString ifcfgInfo = ifcfgInfoList[i];
         ifcfgInfo = ifcfgInfo.trimmed();
         // IP地址
-        if ( ifcfgInfo.indexOf("inet") >= 0 ) {
+        if ( ifcfgInfo.indexOf("inet ") >= 0 ) {
             QStringList ipAddrList = ifcfgInfo.split(" ");
             m_ethInfo.insert("06. IP地址", ipAddrList[1]);
-            m_ethInfo.insert("07. 掩码", ipAddrList[3]);
+            m_ethInfo.insert("07. 掩码", ipAddrList[4]);
         }
         // MAC地址
-        if ( ifcfgInfo.indexOf("ether") >= 0 ) {
+        if ( ifcfgInfo.indexOf("ether ") >= 0 ) {
             QStringList macList = ifcfgInfo.split(" ");
             m_ethInfo.insert("08. MAC地址", macList[1]);
         }

@@ -17,7 +17,7 @@ bool OsGeneralInfo::fetchInfo() {
 
     //! 1. 操作系统信息
     cmdResult = CSysUtils::execCmd("head -n 1 /etc/issue.net");
-    m_osInfo.insert("1. 系统信息", cmdResult);
+    m_osInfo.insert("1. OS信息", cmdResult);
 //    QProcess procOsInfo;
 //    procOsInfo.start("head -n 1 /etc/issue.net");
 //    procOsInfo.waitForFinished();
@@ -31,7 +31,7 @@ bool OsGeneralInfo::fetchInfo() {
 
     //! 2. 系统版本
     cmdResult = CSysUtils::execCmd("cat /proc/version");
-    m_osInfo.insert("2. 操作系统版本", cmdResult);
+    m_osInfo.insert("2. OS版本", cmdResult);
     //! 2. 系统版本
 
     //! 3. 系统位数

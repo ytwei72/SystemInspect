@@ -17,6 +17,8 @@ public:
 
     static QString trimSpace(QString inString);
 
+    static QString autoVolume(double vol);
+
 };
 
 #endif // TRANSFORMUTIL_H

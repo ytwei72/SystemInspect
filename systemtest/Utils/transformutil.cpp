@@ -45,3 +45,15 @@ QString TransformUtil::trimSpace(QString inString) {
     return trimmed.replace(QRegExp("\\s{1,}"), " ");
 }
 
+// 输入参数vol为以KB为单位
+QString TransformUtil::autoVolume(double vol) {
+    if (vol >= 1024 * 1024 * 1024) {
+        return QString("%1 TB").arg(vol / (1024 * 1024 * 1024));
+    } else if (vol >= 1024 * 1024) {
+        return QString("%1 GB").arg(vol / (1024 * 1024));
+    } else if (vol >= 1024) {
+        return QString("%1 MB").arg(vol / (1024));
+    }
+
+    return QString("%1 KB").arg(vol);
+}

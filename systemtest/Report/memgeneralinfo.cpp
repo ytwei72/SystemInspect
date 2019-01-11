@@ -10,10 +10,10 @@ MemGeneralInfo::MemGeneralInfo()
                   << "Buffers" << "SwapTotal" << "SwapFree" << "Active"
                   << "Inactive" << "Shmem" << "Mapped" << "Slab"
                   << "VmallocTotal" << "VmallocUsed";
-    m_keyMeaningList << "内存总量" << "空闲内存" << "可用内存" << "缓存区大小"
-                     << "缓冲区大小" << "交换区总量" << "空闲交换区" << "活跃内存总量"
-                     << "不活跃内存总量" << "共享内存" << "已映射" << "内核Slab"
-                     << "虚拟内存总量" << "已用虚拟内存";
+    m_keyMeaningList << "01. 总内存" << "02. 空闲内存" << "03. 可用内存" << "04. 缓存cache"
+                     << "05. 缓冲区" << "06. 交换区" << "07. 空闲交换区" << "08. 活跃内存"
+                     << "09. 不活跃内存" << "10. 共享内存" << "11. 已映射" << "12. 内核Slab"
+                     << "13. 虚拟内存" << "14. 已用虚存";
 }
 
 bool MemGeneralInfo::fetchInfo() {

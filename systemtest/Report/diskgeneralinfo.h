@@ -20,6 +20,7 @@ public:
     int getDiskCount() { return m_diskInfoList.count(); }
     QString getFSName(int index);
     QJsonObject getFSInfo(int index);
+    DiskFSInfo getDiskFSInfo(int index) { return  m_diskInfoList[index]; }
 
 private:
     QList<DiskFSInfo>          m_diskInfoList;
