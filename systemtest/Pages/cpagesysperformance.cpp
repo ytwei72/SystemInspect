@@ -342,26 +342,27 @@ void CPageSysPerformance::initBandwidthWidget()
     QHBoxLayout *widget_1_H_layout = new QHBoxLayout();
     QLabel * labelUrl = new QLabel();
     labelUrl->setText("请输入网址或IP：");
-    widget_1_H_layout->addWidget(labelUrl, 0, Qt::AlignCenter);
-    widget_1_H_layout->addWidget(m_inputURL, 70, Qt::AlignCenter);
-    widget_1_H_layout->addStretch();
+    widget_1_H_layout->addWidget(labelUrl);//, 0, Qt::AlignLeft);
+    widget_1_H_layout->addWidget(m_inputURL);//, 70, Qt::AlignRight);
+//    widget_1_H_layout->addStretch();
 //    widget_1_H_layout->addWidget(m_buttonTestURL, 0, Qt::AlignCenter);
     widget_1_H_layout->setContentsMargins(20, 5, 20, 5);
     // 水平布局-2
     QHBoxLayout *widget_2_H_layout = new QHBoxLayout();
-    widget_2_H_layout->addWidget(m_buttonAccessURL, 0, Qt::AlignLeft);
-    widget_2_H_layout->addWidget(m_buttonPingURL, 0, Qt::AlignLeft);
-    widget_2_H_layout->addWidget(m_buttonPerformance, 0, Qt::AlignLeft);
+    widget_2_H_layout->addWidget(m_buttonAccessURL);//, 0, Qt::AlignLeft);
+    widget_2_H_layout->addWidget(m_buttonPingURL);//, 0, Qt::AlignLeft);
+    widget_2_H_layout->addWidget(m_buttonPerformance);//, 0, Qt::AlignLeft);
     widget_2_H_layout->setContentsMargins(20, 5, 20, 5);
     // 垂直布局
     QVBoxLayout *widget_1_V_layout = new QVBoxLayout();
     widget_1_V_layout->addLayout(widget_1_H_layout);
     widget_1_V_layout->addLayout(widget_2_H_layout);
-    widget_1_V_layout->addWidget(m_textResult, 0, Qt::AlignCenter);
-    widget_1_V_layout->setContentsMargins(0, 0, 5, 5);
+    widget_1_V_layout->addWidget(m_textResult);//, 0, Qt::AlignTop);
+//    widget_1_V_layout->setContentsMargins(20, 5, 20, 5);
+//    widget_1_V_layout->addStretch();
     QHBoxLayout *main_layout = new QHBoxLayout();
     main_layout->addLayout(widget_1_V_layout);
-    main_layout->setContentsMargins(0,0,0,0);
+//    main_layout->setContentsMargins(0, 0, 0, 0);
 
     m_widgetBandWidth->setLayout(main_layout);
 }
