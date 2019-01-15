@@ -103,11 +103,13 @@ void CCpuDynamicChart::refreshCpuInfo(QString strCpuInfo) {
     double fUserCpuRate = strUserCpuRate.toDouble();
     double fSysCpuRate = strSysCpuRate.toDouble();
 
+    qint64 nowTimeMS = QDateTime::currentMSecsSinceEpoch();
+    m_nPointIndex = (nowTimeMS - m_startTimeMS) / 1000;
     // 添加三条曲线的点
     m_seriesCpuRate->append(m_startTimeMS + m_nPointIndex*1000, fCpuRate);
     m_seriesUserCpuRate->append(m_startTimeMS + m_nPointIndex*1000, fUserCpuRate);
     m_seriesSysCpuRate->append(m_startTimeMS + m_nPointIndex*1000, fSysCpuRate);
-    m_nPointIndex++;
+//    m_nPointIndex++;
 
     // 调整横坐标（曲线向左移动）
     if (m_nPointIndex > m_nWindowWidth)
