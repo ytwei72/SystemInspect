@@ -8,7 +8,7 @@ My_Obj_Flush_Cpu::My_Obj_Flush_Cpu()
     out = "";
     timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(Flush_cpu_info()));
-    timer->start(500);
+    timer->start(1000);
 }
 void My_Obj_Flush_Cpu::Flush_cpu_info()
 {
