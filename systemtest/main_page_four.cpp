@@ -83,7 +83,7 @@ Main_Page_four::Main_Page_four(QWidget *parent) :
     main_layout->setStretchFactor(list, 1);
     main_layout->setStretchFactor(stack, 4);
     main_layout->setContentsMargins(0,0,0,0);
-    setLayout(main_layout);
+    setLayout( main_layout );
 
     pro = new QProcess();
     connect(list, SIGNAL(currentRowChanged(int)), stack, SLOT(setCurrentIndex(int)));//页面切换
