@@ -4,6 +4,8 @@
 #include <QtCharts/QSplineSeries>
 #include <QtCharts/QChartView>
 #include <QAreaSeries>
+#include <QDateTime>
+#include <QDateTimeAxis>
 #include <QHBoxLayout>
 #include <QProcess>
 #include <QValueAxis>
@@ -57,6 +59,11 @@ private:
 
     QTimer *                m_timerRefresh;
     QProcess *              m_procMemInfo;
+
+    QDateTime               m_startTime;
+    qint64                  m_startTimeMS;
+    QDateTimeAxis           m_dateAxisX;
+
 
 signals:
 

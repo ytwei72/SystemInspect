@@ -37,6 +37,8 @@ void SystemPerfReport::initReportLayout() {
     viewReport->setColumnWidth(0, 200);
     viewReport->setAlternatingRowColors(true);
     viewReport->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    viewReport->setMouseTracking(true);
+//    viewReport->set
 
     QHBoxLayout * horiLayout = new QHBoxLayout();
     horiLayout->addWidget(m_buttonGetSysInfo);

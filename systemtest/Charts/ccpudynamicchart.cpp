@@ -1,5 +1,8 @@
 #include "ccpudynamicchart.h"
 
+#include <QDateTime>
+#include <QDateTimeAxis>
+
 
 CCpuDynamicChart::CCpuDynamicChart(QWidget *parent) : QWidget(parent)
 {
@@ -43,7 +46,14 @@ void CCpuDynamicChart::initCpuChartWidget(){
     m_chart->setTitle("CPU性能监测(%)");
     m_chart->createDefaultAxes();
     m_chart->axisY()->setRange(0, 100);
-    m_chart->axisX()->setRange(0, m_nWindowWidth);
+
+    m_dateAxisX.setFormat("HH:mm:ss");
+    m_chart->setAxisX(&m_dateAxisX, m_seriesCpuRate);
+    m_chart->setAxisX(&m_dateAxisX, m_seriesSysCpuRate);
+    m_chart->setAxisX(&m_dateAxisX, m_seriesUserCpuRate);
+    m_startTime = QDateTime::currentDateTime();
+    m_startTimeMS = QDateTime::currentMSecsSinceEpoch();
+    m_dateAxisX.setRange(m_startTime, m_startTime.addSecs(m_nWindowWidth));
     m_chart->setTheme(QChart::ChartThemeDark);
 
     // 新建一个容纳图表的视图
@@ -94,14 +104,15 @@ void CCpuDynamicChart::refreshCpuInfo(QString strCpuInfo) {
     double fSysCpuRate = strSysCpuRate.toDouble();
 
     // 添加三条曲线的点
-    m_seriesCpuRate->append(m_nPointIndex, fCpuRate);
-    m_seriesUserCpuRate->append(m_nPointIndex, fUserCpuRate);
-    m_seriesSysCpuRate->append(m_nPointIndex, fSysCpuRate);
+    m_seriesCpuRate->append(m_startTimeMS + m_nPointIndex*1000, fCpuRate);
+    m_seriesUserCpuRate->append(m_startTimeMS + m_nPointIndex*1000, fUserCpuRate);
+    m_seriesSysCpuRate->append(m_startTimeMS + m_nPointIndex*1000, fSysCpuRate);
     m_nPointIndex++;
 
     // 调整横坐标（曲线向左移动）
     if (m_nPointIndex > m_nWindowWidth)
-        m_chart->axisX()->setRange(m_nPointIndex-m_nWindowWidth, m_nPointIndex);
+        m_dateAxisX.setRange(m_startTime.addSecs(m_nPointIndex-m_nWindowWidth), m_startTime.addSecs(m_nPointIndex));
+//        m_chart->axisX()->setRange(m_nPointIndex-m_nWindowWidth, m_nPointIndex);
 
     // TODO: 清理历史数据，防止长时间运行后，曲线点数过多
 

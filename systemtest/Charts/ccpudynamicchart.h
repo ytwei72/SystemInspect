@@ -3,6 +3,8 @@
 
 #include <QtCharts/QSplineSeries>
 #include <QtCharts/QChartView>
+#include <QDateTime>
+#include <QDateTimeAxis>
 #include <QHBoxLayout>
 #include <QWidget>
 
@@ -33,6 +35,10 @@ private:
     int                     m_nPointIndex;
     // 图的宽度（可展现的点数）
     int                     m_nWindowWidth;
+
+    QDateTime               m_startTime;
+    qint64                  m_startTimeMS;
+    QDateTimeAxis           m_dateAxisX;
 
 signals:
 

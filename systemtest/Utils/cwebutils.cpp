@@ -17,6 +17,8 @@ bool CWebUtils::curlUrl(QString strUrl){
         return false;
 
     m_strOutput = procCurl.readAllStandardOutput();
+    if (m_strOutput.isEmpty())
+        return false;
 
     return true;
 }
@@ -28,6 +30,10 @@ bool CWebUtils::pingUrl(QString strUrl){
     procCurl.start(strCmd);
     bool bFinished = procCurl.waitForFinished();
     if (!bFinished)
+        return false;
+
+    QString errorInfo = procCurl.readAllStandardError();
+    if (!errorInfo.isEmpty())
         return false;
 
     m_strOutput = procCurl.readAllStandardOutput();

@@ -237,13 +237,20 @@ void CPageSysPerformance::curlURL()
 {
     CSysUtils::resetTimerClock();
     CWebUtils webUtil;
-    webUtil.curlUrl(m_inputURL->text());
-    qint64 elpasedTime = CSysUtils::getElapsedMilliSeconds();
-
-    QString strTitle = "\n=============== 主站响应时间 ===============\n";
-    QString strOutput = QString("访问网络地址: %1 ... ...\n共耗时：%2毫秒。\n").arg(m_inputURL->text()).arg(elpasedTime);
+    bool bRv = webUtil.curlUrl(m_inputURL->text());
 
     QString strOldRecord = m_textResult->placeholderText().left(512);
+    QString strTitle;
+    QString strOutput;
+    if (!bRv)
+    {
+        strOutput = "\n=============== 网络访问失败 ===============\n";
+    } else {
+        qint64 elpasedTime = CSysUtils::getElapsedMilliSeconds();
+
+        strTitle = "\n=============== 主站响应时间 ===============\n";
+        strOutput = QString("访问网络地址: %1 ... ...\n共耗时：%2毫秒。\n").arg(m_inputURL->text()).arg(elpasedTime);
+    }
 
     m_textResult->setPlaceholderText(strTitle + strOutput + strOldRecord);
 }
@@ -252,13 +259,21 @@ void CPageSysPerformance::pingURL()
 {
     CSysUtils::resetTimerClock();
     CWebUtils webUtil;
-    webUtil.pingUrl(m_inputURL->text());
+    bool bRv = webUtil.pingUrl(m_inputURL->text());
     qint64 elpasedTime = CSysUtils::getElapsedMilliSeconds();
 
-    QString strTitle = "\n=============== 主站响应时间 ===============\n";
-    QString strOutput = QString("PING: %1 ... ...\n共耗时：%2毫秒。\n").arg(m_inputURL->text()).arg(elpasedTime);
-
     QString strOldRecord = m_textResult->placeholderText().left(512);
+
+    QString strTitle;
+    QString strOutput;
+    if (!bRv)
+    {
+        strOutput = "\n=============== PING指定网址失败 ===============\n";
+    } else {
+        strTitle = "\n=============== 主站响应时间 ===============\n";
+        strOutput = QString("PING: %1 ... ...\n共耗时：%2毫秒。\n").arg(m_inputURL->text()).arg(elpasedTime);
+    }
+
 
     m_textResult->setPlaceholderText(strTitle + strOutput + strOldRecord);
 }

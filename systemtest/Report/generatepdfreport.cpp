@@ -121,8 +121,9 @@ bool GeneratePdfReport::writeSystemInfo() {
         ptPos.setX(m_pageSizePixel.width() * (index % 2) / 2);
         ptPos.setY(m_vertiOffset + index / 2 * (m_lineHeight + m_lineGap));
         QString text = iter.key() + ": " + iter.value().toVariant().toString();
-        if (text.count() > 40)
-            text = text.left(37) + "...";
+        if (text.count() > 50) {
+            text = text.left(text.indexOf("("));
+        }
         m_pdfPainter->drawText(ptPos, text);
         index++;
     }
@@ -149,8 +150,8 @@ bool GeneratePdfReport::writeCpuInfo() {
         ptPos.setX(m_pageSizePixel.width() * (i % 2) / 2);
         ptPos.setY(m_vertiOffset + i / 2 * (m_lineHeight + m_lineGap));
         text = cpuInfo->getKeyNameByIndex(i) + ": " + cpuInfo->getValueByIndex(i);
-        if (text.count() > 40)
-            text = text.left(37) + "...";
+//        if (text.count() > 40)
+//            text = text.left(37) + "...";
         m_pdfPainter->drawText(ptPos, text);
     }
 
@@ -214,8 +215,8 @@ bool GeneratePdfReport::writeMemInfo() {
         ptPos.setY(m_vertiOffset + i / 2 * (m_lineHeight + m_lineGap));
         double volume = memInfo->getKeyValue(keyList[i]).toDouble();
         QString text = keyList[i] + ": " + TransformUtil::autoVolume(volume);
-        if (text.count() > 40)
-            text = text.left(37) + "...";
+//        if (text.count() > 40)
+//            text = text.left(37) + "...";
         m_pdfPainter->drawText(ptPos, text);
     }
     m_vertiOffset += (i + 1) / 2 * (m_lineHeight + m_lineGap);
@@ -269,12 +270,15 @@ bool GeneratePdfReport::writeNetworkInfo() {
         ptPos.setX(m_pageSizePixel.width() * (index % 2) / 2);
         ptPos.setY(m_vertiOffset + index / 2 * (m_lineHeight + m_lineGap));
         QString text = iter.key() + ": " + iter.value().toVariant().toString();
-        if (text.count() > 40)
-            text = text.left(37) + "...";
+//        if (text.count() > 40)
+//            text = text.left(37) + "...";
         m_pdfPainter->drawText(ptPos, text);
-        index++;
+        if (index == 0)
+            index += 2;
+        else
+            index++;
     }
-    m_vertiOffset += index / 2 * (m_lineHeight + m_lineGap);
+    m_vertiOffset += (index + 1) / 2 * (m_lineHeight + m_lineGap);
 
     // 画一条虚线分隔线
     drawDashSplitLine();

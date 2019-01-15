@@ -31,6 +31,9 @@ bool OsGeneralInfo::fetchInfo() {
 
     //! 2. 系统版本
     cmdResult = CSysUtils::execCmd("cat /proc/version");
+    if (cmdResult.count() > 50) {
+        cmdResult = cmdResult.left(cmdResult.indexOf("("));
+    }
     m_osInfo.insert("2. OS版本", cmdResult);
     //! 2. 系统版本
 
