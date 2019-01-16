@@ -13,9 +13,9 @@ if [ $? == 0 ];then
 	dident=`cat fdiskinfo |grep -A6 "Disk /dev/sda"|grep "Disk identifier"|awk '{print $3}'`
 	echo -e "磁盘标识符：\t\t\t$dident"	
 
-	a=`cat fdiskinfo |grep -A6 "Disk /dev/sda"|grep "Disk /dev/sda" |awk '{print $3 $4}'`
+        a=`cat fdiskinfo |grep -A6 "Disk /dev/sda"|grep "Disk /dev/sda" |awk '{print $3 }'`
 	b=${a%?}
-	echo -e "磁盘物理总量：\t\t\t$b" 
+        echo -e "磁盘物理总量：\t\t\t$a G"
 	echo ""
 	hdnum=`cat fdiskinfo |grep -A6 "Disk /dev/sda"|grep "heads" |awk '{print $1}'`
 	echo -e "硬盘磁头数：\t\t\t$hdnum"

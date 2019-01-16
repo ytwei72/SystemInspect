@@ -42,6 +42,7 @@ CPageSysPerformance::CPageSysPerformance(QWidget *parent) : QWidget(parent)
     connect(m_itemList, SIGNAL(currentRowChanged(int)), m_stackWidget, SLOT(setCurrentIndex(int)));
     connect(m_buttonAccessURL, SIGNAL(clicked()), this, SLOT(curlURL()));
     connect(m_buttonPingURL, SIGNAL(clicked()), this, SLOT(pingURL()));
+    connect(m_buttonNetworkDelay, SIGNAL(clicked()), this, SLOT(networkDelay()));
     connect(m_buttonPerformance, SIGNAL(clicked()), this, SLOT(networkPerformance()));
 
     connect(m_buttonTest, SIGNAL(clicked()), this, SLOT(testExportFiles()));
@@ -74,6 +75,21 @@ CPageSysPerformance::CPageSysPerformance(QWidget *parent) : QWidget(parent)
 
 CPageSysPerformance::~CPageSysPerformance()
 {
+
+}
+
+void CPageSysPerformance::networkDelay() {
+    qint64 startTime = CSysUtils::getCurrentTimeStamp();
+
+    QString result = CSysUtils::execCmd("ifdown eth0");
+//    appendOutput(result);
+    result = CSysUtils::execCmd("ifup eth0");
+//    appendOutput(result);
+
+    qint64 endTime = CSysUtils::getCurrentTimeStamp();
+//    appendOutput("\n=============== 网络延时检测 ===============\n正在模拟网络抖动...");
+    QString output = QString("\n=============== 网络延时检测 ===============\n正在模拟网络抖动...\n网络抖动造成延时：%1 毫秒").arg(endTime - startTime);
+    appendOutput(output);
 
 }
 
@@ -239,7 +255,7 @@ void CPageSysPerformance::curlURL()
     CWebUtils webUtil;
     bool bRv = webUtil.curlUrl(m_inputURL->text());
 
-    QString strOldRecord = m_textResult->placeholderText().left(512);
+    QString strOldRecord = m_textResult->placeholderText().left(1024);
     QString strTitle;
     QString strOutput;
     if (!bRv)
@@ -262,7 +278,7 @@ void CPageSysPerformance::pingURL()
     bool bRv = webUtil.pingUrl(m_inputURL->text());
     qint64 elpasedTime = CSysUtils::getElapsedMilliSeconds();
 
-    QString strOldRecord = m_textResult->placeholderText().left(512);
+    QString strOldRecord = m_textResult->placeholderText().left(1024);
 
     QString strTitle;
     QString strOutput;
@@ -291,19 +307,86 @@ void CPageSysPerformance::networkPerformance()
     m_textResult->setPlaceholderText("正在进行检测，请稍等 ... ...");
 }
 
+void CPageSysPerformance::appendOutput(QString output) {
+    QString strOldRecord = m_textResult->placeholderText().left(1024);
+    m_textResult->setPlaceholderText(output + strOldRecord);
+}
 
+//Connecting to host 127.0.0.1, port 5201
+//[  5] local 127.0.0.1 port 60986 connected to 127.0.0.1 port 5201
+//[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+//[  5]   0.00-1.00   sec  3.95 GBytes  33.9 Gbits/sec    0   3.12 MBytes
+//[  5]   1.00-2.00   sec  2.95 GBytes  25.3 Gbits/sec    0   3.12 MBytes
+//[  5]   2.00-3.00   sec  3.60 GBytes  30.9 Gbits/sec    0   3.12 MBytes
+//[  5]   3.00-4.00   sec  3.90 GBytes  33.5 Gbits/sec    0   3.12 MBytes
+//[  5]   4.00-5.00   sec  4.02 GBytes  34.5 Gbits/sec    0   3.12 MBytes
+//[  5]   5.00-6.00   sec  4.28 GBytes  36.7 Gbits/sec    0   3.12 MBytes
+//[  5]   6.00-7.00   sec  3.07 GBytes  26.4 Gbits/sec    0   3.12 MBytes
+//[  5]   7.00-8.00   sec  3.95 GBytes  33.9 Gbits/sec    0   3.12 MBytes
+//[  5]   8.00-9.00   sec  3.28 GBytes  28.2 Gbits/sec    0   3.12 MBytes
+//[  5]   9.00-10.00  sec  3.45 GBytes  29.7 Gbits/sec    0   3.12 MBytes
+//- - - - - - - - - - - - - - - - - - - - - - - - -
+//[ ID] Interval           Transfer     Bitrate         Retr
+//[  5]   0.00-10.00  sec  36.5 GBytes  31.3 Gbits/sec    0             sender
+//[  5]   0.00-10.04  sec  36.5 GBytes  31.2 Gbits/sec                  receiver
 void CPageSysPerformance::procFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     QString errorInfo;
     if (exitCode == 0) {
         QString strOutput = m_procNetperf->readAllStandardOutput();
         qDebug()<<"final result: " + strOutput;
-        m_textResult->setPlaceholderText(strOutput);
+        QStringList outputList = strOutput.split("\n");
+        if (outputList.count() < 17)
+            appendOutput(">>> 检测失败，请检查服务是否启动。");
+        QString finalResult = "\n=============== 网络性能测试 ===============\n";
+        for (int i=0; i< 10; i++) {
+            QString infoLine = outputList[3 + i];
+            infoLine = infoLine.simplified();
+            QStringList itemList = infoLine.split(" ");
+            QString outLine = QString("第%1次测试：时间段[%2 %3]\t传输[%4 %5]\t速率[%6 %7]\n").
+                    arg(i+1).
+                    arg(itemList[2]).
+                    arg(itemList[3]).
+                    arg(itemList[4]).
+                    arg(itemList[5]).
+                    arg(itemList[6]).
+                    arg(itemList[7]);
+            finalResult += outLine;
+        }
+
+        // 发送速率
+        QString infoLine = outputList[15];
+        infoLine = infoLine.simplified();
+        finalResult += ">>>>>>>>>>>>>> 平均测试结果 <<<<<<<<<<<<<<<<\n";
+        QStringList itemList = infoLine.split(" ");
+        QString outLine = QString("发送：时间段[%1 %2]\t传输[%3 %4]\t速率[%5 %6]\n").
+                arg(itemList[2]).
+                arg(itemList[3]).
+                arg(itemList[4]).
+                arg(itemList[5]).
+                arg(itemList[6]).
+                arg(itemList[7]);
+        finalResult += outLine;
+        // 接收速率
+        infoLine = outputList[15];
+        infoLine = infoLine.simplified();
+        itemList = infoLine.split(" ");
+        outLine = QString("接收：时间段[%1 %2]\t传输[%3 %4]\t速率[%5 %6]\n").
+                arg(itemList[2]).
+                arg(itemList[3]).
+                arg(itemList[4]).
+                arg(itemList[5]).
+                arg(itemList[6]).
+                arg(itemList[7]);
+        finalResult += outLine;
+//        appendOutput(finalResult);
+        m_textResult->setPlaceholderText(finalResult);
 
         m_procNetperf->waitForFinished();
         m_procNetperf->deleteLater();
     } else {
         errorInfo = m_procNetperf->readAllStandardError();
-        m_textResult->setPlaceholderText(errorInfo);
+        appendOutput(">>> 检测失败，请检查服务是否启动。\n" + errorInfo);
+//        m_textResult->setPlaceholderText(errorInfo);
     }
 }
 
@@ -353,6 +436,10 @@ void CPageSysPerformance::initBandwidthWidget()
     m_buttonPerformance->setText(tr("检测网卡性能"));
     m_buttonPerformance->setFont(fontButtonUrl);
 
+    m_buttonNetworkDelay = new QPushButton();
+    m_buttonNetworkDelay->setText(tr("网络延时检测"));
+    m_buttonNetworkDelay->setFont(fontButtonUrl);
+
     // 水平布局-1
     QHBoxLayout *widget_1_H_layout = new QHBoxLayout();
     QLabel * labelUrl = new QLabel();
@@ -366,6 +453,7 @@ void CPageSysPerformance::initBandwidthWidget()
     QHBoxLayout *widget_2_H_layout = new QHBoxLayout();
     widget_2_H_layout->addWidget(m_buttonAccessURL);//, 0, Qt::AlignLeft);
     widget_2_H_layout->addWidget(m_buttonPingURL);//, 0, Qt::AlignLeft);
+    widget_2_H_layout->addWidget(m_buttonNetworkDelay);//, 0, Qt::AlignLeft);
     widget_2_H_layout->addWidget(m_buttonPerformance);//, 0, Qt::AlignLeft);
     widget_2_H_layout->setContentsMargins(20, 5, 20, 5);
     // 垂直布局

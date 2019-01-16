@@ -40,6 +40,8 @@ private:
     QPushButton *       m_buttonPingURL;
     // 测试网卡性能的按钮
     QPushButton *       m_buttonPerformance;
+    // 网络延时检测的按钮
+    QPushButton *       m_buttonNetworkDelay;
     // 信息框（测试结果）
     QTextBrowser *      m_textResult;
     // 测试网络性能的进程
@@ -56,8 +58,11 @@ protected slots:
     void pingURL();
     void networkPerformance();
     void procFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void networkDelay();
 
     void testExportFiles();
+
+    void appendOutput(QString output);
 
 public:
 //    CPageSysPerformance();
