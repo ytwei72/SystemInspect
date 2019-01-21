@@ -12,6 +12,9 @@
 #include <QMessageBox>
 #include <QTreeView>
 
+//! TODO: 需要做CS模式，获取各节点信息
+//
+
 SystemPerfReport::SystemPerfReport(QWidget *parent) : QWidget(parent)
 {
     m_pdfReportFile = g_sWorkingPath + "/test_QPdfWriter.pdf";
